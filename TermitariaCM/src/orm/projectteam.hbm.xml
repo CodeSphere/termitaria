@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== CLIENT MANAGEMENT ==================================
+  ===========================================================================
+  ======================== PROJECT TEAM =====================================
+ -->
+ 
+<hibernate-mapping auto-import="true" default-lazy="false">
+	<class name="ro.cs.cm.entity.ProjectTeam" entity-name="ProjectTeam" table="projectteam">
+		<id name="projectTeamId" column="PROJECTTEAMID">
+			<generator class="native"/>
+		</id>
+		<property name="projectId" column="PROJECTID"/>				
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>		
+	</class>
+	
+	<class name="ro.cs.cm.entity.ProjectTeam" entity-name="ProjectTeamAll" table="projectteam">
+		<id name="projectTeamId" column="PROJECTTEAMID">
+			<generator class="native"/>
+		</id>
+		<property name="projectId" column="PROJECTID"/>				
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>	
+		<set name="teamMembers" inverse="true" cascade="all">
+			<key column="PROJECTTEAMID" />
+			<one-to-many entity-name="TeamMember" />
+		</set>	
+	</class>	
+	
+	<class name="ro.cs.cm.entity.ProjectTeam" entity-name="ProjectTeamWithProject" table="projectteam">
+		<id name="projectTeamId" column="PROJECTTEAMID">
+			<generator class="native"/>
+		</id>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>	
+		<many-to-one name="project" entity-name="ProjectAll" column="PROJECTID" unique="true"/>
+	</class>
+		
+</hibernate-mapping>

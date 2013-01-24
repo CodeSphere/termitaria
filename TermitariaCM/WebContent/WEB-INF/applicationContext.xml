@@ -1,0 +1,215 @@
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!-- =========================================================================== 
+	========================= CLIENT MANAGEMENT =============================== 
+	=========================================================================== -->
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+
+	<bean id="applicationContextProvider" class="ro.cs.cm.context.ApplicationContextProvider" />
+
+	<!-- ========================= MESSAGE SOURCE DEFINITION ======================== -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="config.messages" />
+	</bean>
+
+	<bean id="themeSource" class="ro.cs.cm.web.theme.CustomThemeSource">
+		<property name="basenamePrefix" value="config.theme." />
+	</bean>
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties 
+		file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition 
+		below) -->
+	<context:property-placeholder location="classpath:config/jdbc.properties" />
+
+
+	<bean id="CMdataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="${cm.jdbc.driverClassName}"
+		p:url="${cm.jdbc.url}" p:username="${cm.jdbc.username}" p:password="${cm.jdbc.password}" />
+
+
+	<!-- Hibernate SessionFactory for CM -->
+	<bean id="CMSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+		p:dataSource-ref="CMdataSource">
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${cm.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${cm.hibernate.show_sql}</prop>
+				<prop key="hibernate.generate_statistics">${cm.hibernate.generate_statistics}</prop>
+				<prop key="hibernate.default_schema">${cm.hibernate.schema}</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>orm/client.hbm.xml</value>
+				<value>orm/project.hbm.xml</value>
+				<value>orm/projectteam.hbm.xml</value>
+				<value>orm/teammember.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="CMSessionFactory" />
+		</property>
+	</bean>
+
+
+	<!-- ================================= DAO OBJECTS =========================================== -->
+
+	<bean id="clientDao" class="ro.cs.cm.model.dao.impl.DaoClientImpl">
+		<property name="sessionFactory" ref="CMSessionFactory" />
+	</bean>
+
+	<bean id="projectDao" class="ro.cs.cm.model.dao.impl.DaoProjectImpl">
+		<property name="sessionFactory" ref="CMSessionFactory" />
+	</bean>
+
+	<bean id="projectTeamDao" class="ro.cs.cm.model.dao.impl.DaoProjectTeamImpl">
+		<property name="sessionFactory" ref="CMSessionFactory" />
+	</bean>
+
+	<bean id="teamMemberDao" class="ro.cs.cm.model.dao.impl.DaoTeamMemberImpl">
+		<property name="sessionFactory" ref="CMSessionFactory" />
+	</bean>
+
+	<!-- ================================ END DAO OBJECTS ======================================== -->
+
+
+	<!-- ========================= OM WEB SERVICE CLIENT CONFIGURATION =========================== -->
+
+	<bean id="omWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="ro.cs.cm.ws.client.om.entity" />
+		<property name="marshallerProperties">
+			<map>
+				<entry>
+					<key>
+						<value>com.sun.xml.bind.namespacePrefixMapper</value>
+					</key>
+					<bean class="ro.cs.cm.ws.client.om.NamespacePrefixMapperImpl" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="omWebServiceClient" class="ro.cs.cm.ws.client.om.OMWebServiceClient">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri" value="http://localhost:8080/Termitaria/OM/services" />
+		<property name="marshaller" ref="omWsClientMarshaller" />
+		<property name="unmarshaller" ref="omWsClientMarshaller" />
+		<property name="interceptors">
+			<list>
+				<ref bean="wsClientsSecurityInterceptor" />
+			</list>
+		</property>
+		<property name="objectFactory" ref="omWsClientObjectFactory" />
+	</bean>
+
+	<bean id="omWsClientObjectFactory" class="ro.cs.cm.ws.client.om.entity.ObjectFactory" />
+
+
+	<!-- ========================= TS WEB SERVICE CLIENT CONFIGURATION =========================== -->
+
+	<bean id="tsWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="ro.cs.cm.ws.client.ts.entity" />
+		<property name="marshallerProperties">
+			<map>
+				<entry>
+					<key>
+						<value>com.sun.xml.bind.namespacePrefixMapper</value>
+					</key>
+					<bean class="ro.cs.cm.ws.client.ts.NamespacePrefixMapperImpl" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="tsWebServiceClient" class="ro.cs.cm.ws.client.ts.TSWebServiceClient">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri" value="http://localhost:8080/Termitaria/TS/services" />
+		<property name="marshaller" ref="tsWsClientMarshaller" />
+		<property name="unmarshaller" ref="tsWsClientMarshaller" />
+		<property name="interceptors">
+			<list>
+				<ref bean="wsClientsSecurityInterceptor" />
+			</list>
+		</property>
+		<property name="objectFactory" ref="tsWsClientObjectFactory" />
+	</bean>
+
+	<bean id="tsWsClientObjectFactory" class="ro.cs.cm.ws.client.ts.entity.ObjectFactory" />
+
+	<!-- ========================= AUDIT WEB SERVICE CLIENT CONFIGURATION ============== -->
+
+	<bean id="auditWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="ro.cs.cm.ws.client.audit.entity" />
+		<property name="mtomEnabled" value="true" />
+		<property name="marshallerProperties">
+			<map>
+				<entry>
+					<key>
+						<value>com.sun.xml.bind.namespacePrefixMapper</value>
+					</key>
+					<bean class="ro.cs.cm.ws.client.audit.NamespacePrefixMapperImpl" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="auditWebServiceClient" class="ro.cs.cm.ws.client.audit.AuditWebServiceClient">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri" value="http://localhost:8080/Termitaria/Audit/services" />
+		<property name="marshaller" ref="auditWsClientMarshaller" />
+		<property name="unmarshaller" ref="auditWsClientMarshaller" />
+		<property name="interceptors">
+			<list>
+				<ref bean="wsClientsSecurityInterceptor" />
+			</list>
+		</property>
+		<property name="objectFactory" ref="auditWsClientObjectFactory" />
+	</bean>
+
+	<bean id="auditWsClientObjectFactory" class="ro.cs.cm.ws.client.audit.entity.ObjectFactory" />
+
+	<!-- ========== MESSAGE FACTORY USED BY OM WS CLIENT AND CM WEB SERVICE 
+		SERVER ======================== -->
+
+	<bean id="messageFactory"
+		class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory">
+		<property name="payloadCaching" value="true" />
+		<property name="attachmentCaching" value="true" />
+		<property name="attachmentCacheDir" value="C:\\Termitaria\\attachmentCacheDirCM" />
+		<property name="attachmentCacheThreshold" value="1024" />
+	</bean>
+
+	<!-- ========================= END OM WEB SERVICE CLIENT CONFIGURATION ================================ -->
+</beans>

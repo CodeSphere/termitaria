@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+ -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://localhost:8080/CM/services/schemas/messages" 
+		xmlns:tns="http://localhost:8080/CM/services/schemas/messages" 
+		elementFormDefault="qualified">
+		
+	<!-- ====================================== SCHEMA ELEMENTS =============================================================== -->
+	
+	<element name="GetProjectsAndTeamMembersByPersonRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="personId" type="int"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetProjectsAndTeamMembersByPersonResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="0" maxOccurs="unbounded" name="projectsAndTeamMembersIds">
+					<complexType>
+	                	<sequence>
+	                  		<element name="key" minOccurs="0" type="tns:wsProject"/>
+	                  		<element name="value" minOccurs="0" type="integer"/>
+	                	</sequence>
+	              	</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- ======================================  END SCHEMA ELEMENTS ========================================================== -->
+	
+	
+	<!-- ======================================  SCHEMA TYPES ================================================================= -->
+	
+	<complexType name="wsProject">
+		<sequence>
+			<element name="projectId" type="int"/>
+			<element name="name" type="string"/>
+			<element name="managerId" type="integer"/>
+			<element name="organizationId" type="integer"/>
+			<element name="clientId" type="integer"/>
+			<element name="status" type="byte"/>
+			<element name="projectTeam" type="tns:wsProjectTeam"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="wsTeamMember">
+		<sequence>
+			<element name="memberId" type="int"/>
+			<element name="projectTeamId" type="int"/>
+			<element name="personId" type="int"/>
+			<element name="lastName" type="string"/>
+			<element name="email" type="string"/>
+			<element name="address" type="string"/>
+			<element name="phone" type="string"/>
+			<element name="observation" type="string"/>
+			<element name="description" type="string"/>
+			<element name="status" type="byte"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="wsProjectTeam">
+		<sequence>
+			<element name="projectTeamId" type="int"/>
+			<element name="projectId" type="int"/>
+			<element name="name" type="string"/>
+			<element name="parentId" type="int"/>
+			<element name="observation" type="string"/>
+			<element name="description" type="string"/>
+			<element name="status" type="byte"/>
+			<element name="teamMembers" minOccurs="0" maxOccurs="unbounded" type="tns:wsTeamMember"/>
+		</sequence>
+	</complexType>
+	<!--  =====================================  END SCHEMA TYPES ======================================================== -->
+</schema>
+	

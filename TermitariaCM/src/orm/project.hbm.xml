@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== CLIENT MANAGEMENT ==================================
+  ===========================================================================
+  ======================== PROJECT ==========================================
+ -->
+ <hibernate-mapping auto-import="true" default-lazy="false">
+  
+ 	<class name="ro.cs.cm.entity.Project" entity-name="Project"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />		
+		<property name="observation" column="OBSERVATION" />
+		<property name="description" column="DESCRIPTION" />
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectWithManager"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />		
+		<property name="observation" column="OBSERVATION" />
+		<property name="description" column="DESCRIPTION" />
+		<property name="status" column="STATUS"/>
+		<property name="managerId" column="MANAGERID" />
+		<property name="clientId" column="CLIENTID"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectAll"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />		
+		<property name="clientId" column="CLIENTID"/>
+ 		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="observation" column="OBSERVATION" />
+		<property name="description" column="DESCRIPTION" />		
+		<property name="managerId" column="MANAGERID" />
+		<property name="status" column="STATUS"/>
+		
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectForUpdateStatus"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>		
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectForDelete"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />		
+		<property name="clientId" column="CLIENTID"/>
+ 		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="observation" column="OBSERVATION" />
+		<property name="description" column="DESCRIPTION" />		
+		<property name="managerId" column="MANAGERID" />
+		<property name="status" column="STATUS"/>				   		      
+		<one-to-one name="projectTeam" entity-name="ProjectTeamAll" class="ProjectTeam"  property-ref="projectId" cascade="save-update" />
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectWithClient"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />		
+		 <!-- Models a many-to-one relation with a Project -->        		
+		<many-to-one name="client" entity-name="Client" column="CLIENTID" unique="true" />
+ 		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="observation" column="OBSERVATION" />
+		<property name="description" column="DESCRIPTION" />		
+		<property name="managerId" column="MANAGERID" />
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Project" entity-name="ProjectWithProjectTeam"
+		table="project">
+		<id name="projectId" column="PROJECTID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />	
+		<property name="managerId" column="MANAGERID" />
+		<property name="status" column="STATUS"/>		
+		<property name="clientId" column="CLIENTID"/>
+ 		<property name="organizationId" column="ORGANIZATIONID"/>
+		<one-to-one name="projectTeam" entity-name="ProjectTeam" class="ProjectTeam"  property-ref="projectId" cascade="save-update" />
+	</class>
+				
+ </hibernate-mapping>
+ 

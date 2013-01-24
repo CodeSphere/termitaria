@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== CLIENT MANAGEMENT ==================================
+  ===========================================================================
+  ======================== CLIENT ===========================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+	<class name="ro.cs.cm.entity.Client" entity-name="Client" table="client">
+		<id name="clientId" column="CLIENTID">
+			<generator class="native"/>
+		</id>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="type" column="TYPE"/>
+		<property name="address" column="ADDRESS"/>
+		<property name="phone" column="PHONE"/>
+		<property name="email" column="EMAIL"/>
+		<property name="fax" column="FAX"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="status" column="STATUS"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="p_firstName" column="P_FIRSTNAME"/>
+		<property name="p_lastName" column="P_LASTNAME"/> 	
+		<property name="p_sex" column="P_SEX"/>
+		<property name="p_birthDate" column="P_BIRTHDATE"/>
+		<property name="c_name" column="C_NAME"/>
+		<property name="c_cui" column="C_CUI"/>
+		<property name="c_iban" column="C_IBAN"/>
+		<property name="c_capital" column="C_CAPITAL"/>
+		<property name="c_location" column="C_LOCATION"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Client" entity-name="ClientForListing" table="client">
+		<id name="clientId" column="CLIENTID">
+			<generator class="native"/>
+		</id>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="type" column="TYPE"/>
+		<property name="email" column="EMAIL"/>
+		<property name="status" column="STATUS"/>
+		<property name="p_firstName" column="P_FIRSTNAME"/>
+		<property name="p_lastName" column="P_LASTNAME"/>
+		<property name="c_name" column="C_NAME"/> 
+		<property name="address" column="ADDRESS"/>
+	</class>
+	
+	<class name="ro.cs.cm.entity.Client" entity-name="ClientForDelete" table="client">
+		<id name="clientId" column="CLIENTID">
+			<generator class="native"/>
+		</id>
+		<property name="type" column="TYPE"/>
+		<property name="p_firstName" column="P_FIRSTNAME"/>
+		<property name="p_lastName" column="P_LASTNAME"/>
+		<property name="c_name" column="C_NAME"/> 
+	</class>
+	
+	<class name="ro.cs.cm.entity.Client" entity-name="ClientWithProjects" table="client">
+		<id name="clientId" column="CLIENTID">
+			<generator class="native"/>
+		</id>
+		<property name="type" column="TYPE"/>
+		<property name="p_firstName" column="P_FIRSTNAME"/>
+		<property name="p_lastName" column="P_LASTNAME"/>
+		<property name="c_name" column="C_NAME"/> 
+		<property name="status" column="STATUS"/>
+		<set name="projects" inverse="true" cascade="save-update">
+			<key column="CLIENTID" />
+			<one-to-many entity-name="ProjectForDelete" />
+		</set>
+	</class>
+		
+</hibernate-mapping>
