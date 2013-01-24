@@ -13,14 +13,28 @@
 	C:\Termitaria\attachmentCacheDirCM
 4. Add all your projects on Tomcat Server: TermitariaOM, TermitariaCM, TermitariaTS and TermitariaAudit.   
 
+5. You might need to increase Tomcat's startup time to more than 45 seconds (try at least 100 seconds).
+	5.1 Open Tomcat's Server Config Editor: double click on Tomcat Server from the Servers View
+	5.2 In the Timeouts section, increase the Start (in seconds) value
 
-------------------------------------------------------------------
-If you have troubles configuring Termitaria please contact us:
+6. We also recommend to increase Tomcat's memory (-XX:MaxPermSize=1024m -XX:PermSize=512m).
+	6.1 Open Tomcat's Server Config Editor: double click on Tomcat Server from the Servers View
+	6.2 From the General Information Section, click on Open launch configuration
+	6.3 Click on the (x)=Arguments tab
+	6.4 Add in the VM Arguments box, after the last line the following configuration: -XX:MaxPermSize=1024m -XXermSize=512m 
+
+7. Access the application at the following url: http://localhost:8080/TermitariaOM using the default credentials: adminIT/password.
+   AdminIT is the super administrator. Using adminIT you can add as many organizations and users as you please. After adding an 
+   organization, you can add an administrator for that organization.
+   Logged in as that new created organization's administrator you can build more (adding more people, departments, etc).	
+
+--------------------------------------------------------------------------
+If you have problems configuring the Termitaria Project please contact us:
 
 Tekin Omer-Ali 
-CodeSphere Termitaria Project Team Leader
+Termitaria Main Developer
 tekin.omer-ali@codesphere.ro
 
 Dan Damian 
-Head of the Project
-dan.damian@codesphere.ro 
+Termitaria Community Manager
+dan.damian@codesphere.ro
