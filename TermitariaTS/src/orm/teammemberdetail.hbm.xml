@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  ======================== TEAM MEMBER DETAIL ================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+	<class name="ro.cs.ts.entity.TeamMemberDetail" entity-name="TeamMemberDetailSimple" table="teammemberdetail">
+		<id name="teamMemberDetailId" column="TEAMMEMBERDETAILID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberId" column="TEAMMEMBERID"/>
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.TeamMemberDetail" entity-name="TeamMemberDetail" table="teammemberdetail">
+		<id name="teamMemberDetailId" column="TEAMMEMBERDETAILID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberId" column="TEAMMEMBERID"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="overtimeCostPrice" column="OVERTIMECOSTPRICE"/>
+		<property name="overtimeCostCurrencyId" column="OVERTIMECOSTCURRENCY"/>
+		<property name="overtimeBillingPrice" column="OVERTIMEBILLINGPRICE"/>
+		<property name="overtimeBillingCurrencyId" column="OVERTIMEBILLINGCURRENCY"/>
+		<property name="overtimeCostTimeUnit" column="OVERTIMECOSTTIMEUNIT"/>
+		<property name="overtimeBillingTimeUnit" column="OVERTIMEBILLINGTIMEUNIT"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.TeamMemberDetail" entity-name="TeamMemberDetailForUpdate" table="teammemberdetail">
+		<id name="teamMemberDetailId" column="TEAMMEMBERDETAILID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberId" column="TEAMMEMBERID"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="overtimeCostPrice" column="OVERTIMECOSTPRICE"/>
+		<property name="overtimeCostCurrencyId" column="OVERTIMECOSTCURRENCY"/>
+		<property name="overtimeBillingPrice" column="OVERTIMEBILLINGPRICE"/>
+		<property name="overtimeBillingCurrencyId" column="OVERTIMEBILLINGCURRENCY"/>
+		<property name="overtimeCostTimeUnit" column="OVERTIMECOSTTIMEUNIT"/>
+		<property name="overtimeBillingTimeUnit" column="OVERTIMEBILLINGTIMEUNIT"/>
+		<property name="observation" column="OBSERVATION"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.TeamMemberDetail" entity-name="TeamMemberDetailWithCurrencies" table="teammemberdetail">
+		<id name="teamMemberDetailId" column="TEAMMEMBERDETAILID">
+			<generator class="native" />
+		</id>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="overtimeCostCurrencyId" column="OVERTIMECOSTCURRENCY"/>
+		<property name="overtimeBillingCurrencyId" column="OVERTIMEBILLINGCURRENCY"/>
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.TeamMemberDetail" entity-name="TeamMemberDetailWithAll" table="teammemberdetail">
+		<id name="teamMemberDetailId" column="TEAMMEMBERDETAILID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberId" column="TEAMMEMBERID"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="costPriceCurrency" entity-name="Currency" column="COSTPRICECURRENCY" unique="true" not-found="ignore"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="billingPriceCurrency" entity-name="Currency" column="BILLINGPRICECURRENCY" unique="true" not-found="ignore"/>		
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="overtimeCostPrice" column="OVERTIMECOSTPRICE"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="overtimeCostCurrency" entity-name="Currency" column="OVERTIMECOSTCURRENCY" unique="true" not-found="ignore"/>		
+		<property name="overtimeBillingPrice" column="OVERTIMEBILLINGPRICE"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="overtimeBillingCurrency" entity-name="Currency" column="OVERTIMEBILLINGCURRENCY" unique="true" not-found="ignore"/>				
+		<property name="overtimeCostTimeUnit" column="OVERTIMECOSTTIMEUNIT"/>
+		<property name="overtimeBillingTimeUnit" column="OVERTIMEBILLINGTIMEUNIT"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="status" column="STATUS"/>
+	</class>	
+	
+</hibernate-mapping>

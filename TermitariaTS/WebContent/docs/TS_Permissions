@@ -1,0 +1,171 @@
+
+- TS_RecordSearchAll
+--------------------------------------
+	Descriere: permite vizualizarea tuturor pontajelor: cele introduse de utilizatorul care detine permisiunea, 
+			   de alti utilizatori si a pontajelor corespunzatoare unor persoane din organizatie
+			   care nu fac parte din nici o echipa de proiect.
+	Indicat a se atribui rolului TS_USER_ALL
+
+- TS_RecordDeleteAll
+--------------------------------------
+	Descriere: permite stergerea tuturor pontajelor: cele introduse de utilizatorul care detine permisiunea, 
+			   de alti utilizatori si a pontajelor corespunzatoare unor persoane din organizatie
+			   care nu fac parte din nici o echipa de proiect.
+	Indicat a se atribui rolului TS_USER_ALL
+			   
+- TS_RecordUpdateAll
+--------------------------------------
+	Descriere: permite editarea tuturor pontajelor: cele introduse de utilizatorul care detine permisiunea, 
+			   de alti utilizatori si a pontajelor corespunzatoare unor persoane din organizatie
+			   care nu fac parte din nici o echipa de proiect.
+	Indicat a se atribui rolului TS_USER_ALL
+
+- TS_RecordAddAll
+--------------------------------------
+	Descriere: permite inregistrarea de pontaje in orice proiect sau per organizatie, avand drept titualar utilizatorul
+	care detine permisiunea, orice membru al echipelor de proiect sau orice persoana din organizatie (in cazul pontajelor
+	per organizatie)
+	Indicat a se atribui rolului TS_USER_ALL
+	
+- TS_RecordViewCosts
+---------------------------------------
+	Descriere: permite vizualizarea de costuri pe pontaje: per activitate, membru de echipa si persoana din organizatie,
+		       care nu face parte din nici un proiect.
+	Observatie: vizualizarea informatiilor legate de costuri se va face de USER_ALL, cu toate acestea, un utilizator care
+			    nu are aceasta permisiune, dar cu toate aceasta este managerul proiectului pentru care s-a facut pontajul,
+			    va putea vizualiza aceste informatii.
+	Indicat a se atribui rolului TS_UER_ALL
+	
+-TS_CostSheetSearchAll:
+--------------------------------------
+	Descriere: permite inregistrarea de costuri in orice proiect sau per organizatie, avand drept titualar utilizatorul
+	care detine permisiunea, orice membru al echipelor de proiect sau orice persoana din organizatie (in cazul pontajelor
+	per organizatie)
+	Indicat a se atribui rolului TS_USER_ALL 
+	
+- TS_CostSheetDeleteAll
+--------------------------------------
+	Descriere: permite stergerea tuturor costurilor: cele introduse de utilizatorul care detine permisiunea, 
+			   de alti utilizatori si a costurilor corespunzatoare unor persoane din organizatie
+			   care nu fac parte din nici o echipa de proiect.
+	Indicat a se atribui rolului TS_USER_ALL
+			   
+- TS_CostSheetUpdateAll
+--------------------------------------
+	Descriere: permite editarea tuturor costurilor: cele introduse de utilizatorul care detine permisiunea, 
+			   de alti utilizatori si a costurilor corespunzatoare unor persoane din organizatie
+			   care nu fac parte din nici o echipa de proiect.
+	Indicat a se atribui rolului TS_USER_ALL
+
+- TS_CostSheetAddAll
+--------------------------------------
+	Descriere: permite inregistrarea de costuri in orice proiect sau per organizatie, avand drept titualar utilizatorul
+	care detine permisiunea, orice membru al echipelor de proiect sau orice persoana din organizatie (in cazul pontajelor
+	per organizatie)
+	Indicat a se atribui rolului TS_USER_ALL
+	
+- TS_ProjectAdvancedSearch
+--------------------------------------
+	Descriere: permite o cautare avansata a proiectelor: toate proiectele din organizatie
+	Indicat a se atribui rolului : TS_USER_ALL
+	
+- TS_ProjectAdvancedView
+--------------------------------------
+	Descriere: permite vizualizarea avansata pentru un proiect. Vizualizarea avansata contine si detaliile
+	           de proiect (acele ProjectDetails). Permisiunea se extrapoleaza la toate proiectele din organizatie.
+	Indicat a se atribui rolului : TS_USER_ALL (pentru toate proiectele din organizatie)
+	(Vizualizarea avansata pentru un proiect mai este disponibila si pentru un utilizator care este
+	 PM pentru un proiect)
+
+- TS_ProjectAddUpdateProjectDetails 
+--------------------------------------
+	Descriere: permite adaugarea sau modificarea detaliilor de proiect. 
+			   Permisiunea se extrapoleaza la toate proiectele din organizatie.
+	Indicat a se atribui rolului: TS_USER_ALL (pentru toate proiectele din organizatie)
+	(Adaugarea sau modificarea detaliilor de proiect se mai poate face si de catre un utilizator care 
+	este PM pentru un proiect).
+	
+- TS_PersonDetailAddUpdate
+--------------------------------------
+	Descriere: permite adaugarea sau modificarea detaliilor pentru o persoana.
+			   Permisiunea se extrapoleaza la toate persoanele din organizatie.
+	Indicat a se atribui rolului : TS_USER_ALL
+	(Adaugarea sau modifcarea detaliilor pentru o persoana se mai poate face si de catre un utilizator care 
+	 este PM pentru un proiect, pentru persoanele din proiectul sau).
+	
+- TS_ProjectAddUpdateTeamMemberDetails
+--------------------------------------
+	Descriere: permite adaugarea sau modificarea detaliilor pentru un membru al echipei.
+			   Permisiunea se extrapoleaza la toti membrii echipei din toate proiectele din organizie.
+	Indicat a se atribui rolului: TS_USER_ALL
+	(Adaugarea sau modificarea detaliilor pentru un membru al echipei se mai poate face si de catre
+	un utilizator care este PM pentru un proiect, pentru membrii echipei din acel proiect);
+ 
+- TS_ActivityAdvancedSearch
+--------------------------------------
+	Descriere: permite o cautare avansata a activitatilor:
+							- activitatile din toate proiectele existente in organizatie &
+							- activitatile din organizatie
+	Indicat a se atribui rolului: TS_USER_ALL
+	
+- TS_ActivityAdvancedAddUpdate
+--------------------------------------
+	Descriere: permite adaugarea sau modificarea avansata a unei activiti:
+					- activitatile se creaza pentru un proiect &
+					- activitatile se creaza in cadrul organizatie
+	Indicat a se atribui rolului : TS_USER_ALL
+	
+- TS_ActivityDelete
+--------------------------------------
+	Descriere: permite stergerea tuturor activitatilor din toate proiectele din organizatie sau direct din organizatie
+	Indicat a se atribui rolului: TS_USER_ALL
+	(Stergerea unei activitati se mai poate face si de catre un utilizator care este PM pentru proiectul pentru
+	care s-a creat activitatea).	
+	
+- TS_PersonAdvancedSearch
+--------------------------------------
+	Descriere: permite o cautare avansata a persoanelor:
+							- din interiorul organizatiei &
+							- persoanele externe (din proiecte)
+	Indicat a se atribui rolului: TS_USER_ALL
+	
+- TS_CurrencySearch
+--------------------------------------
+	Descriere: Permite cautarea de monede/afisarea tab-ului "Moneda"
+	Indicat a se atribui rolului: TS_USER_ALL
+	
+- TS_CurrencyAdd
+--------------------------------------
+	Descriere: Permite adaugarea de monede.
+	Indicat a se atribui rolului: TS_USER_ALL	
+
+- TS_CurrencyUpdate
+--------------------------------------
+	Descriere: Permite editarea monedelor.
+	Indicat a se atribui rolului: TS_USER_ALL
+	
+- TS_CurrencyDelete
+--------------------------------------
+	Descriere: Permite stegerea monedelor.
+	Indicat a se atribui rolului: TS_USER_ALL		
+	
+- TS_PersonAdvancedView
+----------------------------------------
+Descriere: permite vizualizarea avansata pentru o persoana. Vizualizarea avansata contine
+		   si detaliile referitoare le persoane( acele PersonDetail). Permisiunea se extrapoleaza la
+		   toate persoanele din organizatie.
+		   Indicat a se atribui rolului : TS_USER_ALL ( pentru toate persoanele din organizatie)
+		   
+- TS_TeamMemberView
+-----------------------------------------
+Descriere: permite vizualizarea unui membru de echipa. Vizualizarea contine si detaliile
+           referitoare la membrul echipei( acele TeamMemberDetail).
+           (Vizualizarea informatiilor despre membru echipei mai este disponibila si pentru un
+            utilizator care este PM intr-un proiect, in care exista acel membru de echipa).
+            
+- TS_ReportsView
+-----------------------------------------
+Descriere: permite vizualizarea tabului de rapoarte. Utilizatorul poate crea rapoarte noi si vizualiza 
+           rapoartele deja create.
+           (Vizualizarea si cerearea de rapoarte mai este disponibila si pentru utilizatorul cu rol de PM 
+           doar pentru proiectele sale)           

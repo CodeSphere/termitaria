@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>TermitariaTS</display-name>
+	<description>Termitaria - Time Sheet Module</description>
+
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>ts.root</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/config/log4j.properties</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>	      
+	      /WEB-INF/applicationContext.xml
+	      /WEB-INF/applicationContext-security.xml
+	    </param-value>
+	</context-param>
+
+
+	<!-- ============================== FILTERS =================================== -->
+	<filter>
+		<filter-name>basicProcessingFilter</filter-name>
+		<filter-class>ro.cs.ts.web.security.TokenBasedAuthenticationFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>ExpiredSessionFilter</filter-name>
+		<filter-class>ro.cs.ts.web.filter.ExpiredSessionFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>GeneralFilter</filter-name>
+		<filter-class>ro.cs.ts.web.filter.GeneralFilter</filter-class>
+		<init-param>
+			<param-name>Cache-Control</param-name>
+			<param-value>private</param-value>
+		</init-param>
+		<init-param>
+			<param-name>Cache-Control</param-name>
+			<param-value>no-store</param-value>
+		</init-param>
+		<init-param>
+			<param-name>Cache-Session</param-name>
+			<param-value>must-revalidate</param-value>
+		</init-param>
+		<init-param>
+			<param-name>Pragma</param-name>
+			<param-value>no cache</param-value>
+		</init-param>
+		<init-param>
+			<param-name>Expires</param-name>
+			<param-value>0</param-value>
+		</init-param>
+	</filter>
+
+	<!-- Enables Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<!-- ============================== FILTERS END ================================ -->
+
+	<!-- ============================== FILTERS MAPPINGS =========================== -->
+
+	<!-- Filters mapping needs to be in this order: SecurityFilter, GeneralFilter 
+		and the last one ExpiredSessionFilter. Filters are invoked in the order they 
+		were mapped. -->
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>LogoServlet</servlet-name>
+		<servlet-class>ro.cs.ts.web.servlet.LogoServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LogoServlet</servlet-name>
+		<url-pattern>/servlet/LogoServlet</url-pattern>
+	</servlet-mapping>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/j_spring_security_logout</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/j_spring_security_check</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>GeneralFilter</filter-name>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>GeneralFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ExpiredSessionFilter</filter-name>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>basicProcessingFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping>
+	<!-- ============================== FILTERS MAPPINGS END ======================== -->
+
+	<!-- Leave the listener commented-out if using JBoss -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>DISPATCHER</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>InitApplication</servlet-name>
+		<servlet-class>ro.cs.ts.start.InitApplication</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DISPATCHER</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error.html</location>
+	</error-page>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- =================================== Spring Web Services Message Dispatcher 
+		Servlet configuration ============================== -->
+
+	<servlet>
+		<servlet-name>spring-ws</servlet-name>
+		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>spring-ws</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>spring-ws</servlet-name>
+		<url-pattern>*.wsdl</url-pattern>
+	</servlet-mapping>
+
+	<!-- =================================== Reports Servlet used for reports 
+		transfer ================================================== -->
+
+	<servlet>
+		<servlet-name>ReportServlet</servlet-name>
+		<servlet-class>ro.cs.ts.web.servlet.ReportServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ReportServlet</servlet-name>
+		<url-pattern>/reportServlet</url-pattern>
+	</servlet-mapping>
+
+</web-app>

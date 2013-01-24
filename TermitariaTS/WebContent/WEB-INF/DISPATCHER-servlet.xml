@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+   ===========================================================================
+   ============================= TIMESHEET ==================================
+   ===========================================================================
+  -->
+<beans>
+
+	<!-- ========================= VIEW DEFINITIONS ========================= -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="config.views"/>
+	</bean>
+	
+	<!-- ========================= DEFINITIONS OF PUBLIC CONTROLLERS ========================= -->
+
+	<!-- Common Injections Abstract Controller - CIA Controller -->
+	<bean id="CIAController" abstract="true">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- =======================================CONTROLERS========================================= -->
+	
+	<!-- first 2 Controllers to manage first entrance of one user -->
+	
+	<!-- 1 authentication page : SignOnController-->
+	
+	<!-- 2 Main TS page -->
+	<bean id="MainController" parent="CIAController" class="ro.cs.ts.web.controller.general.MainController"/>
+	
+	<!-- Time sheet -->
+	
+	<!-- RECORD -->
+	<bean id="RecordSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.RecordSearchController"/>
+	<bean id="RecordFormController" parent="CIAController" class="ro.cs.ts.web.controller.form.RecordFormController"/>
+	<bean id="RecordViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.RecordViewController"/>
+	<bean id="RecordBillableController" parent="CIAController" class="ro.cs.ts.web.controller.general.RecordBillableController"/>	
+	
+	<!-- PROJECT -->
+	
+	<bean id="ProjectSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.ProjectSearchController"/>
+	<bean id="ProjectDetailsController" parent="CIAController" class="ro.cs.ts.web.controller.form.ProjectDetailsController"/>
+	<bean id="ProjectListTeamMembersController" parent="CIAController" class="ro.cs.ts.web.controller.general.ProjectListTeamMembersController"/>
+	<bean id="ProjectViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.ProjectViewController"/>
+	<bean id="HomeController" parent="CIAController" class="ro.cs.ts.web.controller.general.HomeController"/>
+	<bean id="ProjectDetailsExtended" parent="CIAController" class="ro.cs.ts.web.controller.general.ProjectDetailsExtendedController"/>
+	
+	<!-- ACTIVITY -->
+	<bean id="ActivityController" parent="CIAController" class="ro.cs.ts.web.controller.form.ActivityController"/> 
+	<bean id="ActivitySearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.ActivitySearchController"/> 
+	<bean id="ActivityBillingInformationsController" parent="CIAController" class="ro.cs.ts.web.controller.general.ActivityBillingInformationsController"/>
+	<bean id="ActivityViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.ActivityViewController"/>
+	<bean id="ActivityBillableController" parent="CIAController" class="ro.cs.ts.web.controller.general.ActivityBillableController"/>	
+	
+	<!-- PERSON -->	
+	<bean id="PersonSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.PersonSearchController"/> 	
+	<bean id="PersonDetailController" parent="CIAController" class="ro.cs.ts.web.controller.form.PersonDetailController"/>
+	<bean id="PersonViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.PersonViewController"/>
+	
+	<!-- TEAM MEMBER -->	
+	<bean id="TeamMemberDetailController" parent="CIAController" class="ro.cs.ts.web.controller.form.TeamMemberDetailController"/>
+	<bean id="TeamMemberViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.TeamMemberViewController"/>	
+	
+	<!--  NOTIFICATION -->	
+	<bean id="NotificationSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.NotificationSearchController"/>
+	<bean id="NotificationSettingsController" parent="CIAController" class="ro.cs.ts.web.controller.form.NotificationSettingsController"/>
+	<bean id="NotificationLanguageController" parent="CIAController" class="ro.cs.ts.web.controller.form.NotificationLanguageController"/>
+		
+	
+	<!-- COST SHEET -->
+	<bean id="CostSheetSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.CostSheetSearchController"/>
+	<bean id="CostSheetFormController" parent="CIAController" class="ro.cs.ts.web.controller.form.CostSheetFormController"/>
+	<bean id="CostSheetViewController" parent="CIAController" class="ro.cs.ts.web.controller.general.CostSheetViewController"/>
+	<bean id="CostSheetBillableController" parent="CIAController" class="ro.cs.ts.web.controller.general.CostSheetBillableController"/>
+			
+	<!-- CURRENCY -->
+	<bean id="CurrencySearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.CurrencySearchController"/>
+	<bean id="CurrencyFormController" parent="CIAController" class="ro.cs.ts.web.controller.form.CurrencyFormController">
+		<property name="validator">
+			<bean class="ro.cs.ts.web.validator.CurrencyFormValidator"></bean>
+		</property>
+	</bean>
+	
+	<!-- EXCHANGE -->
+	<bean id="ExchangeSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.ExchangeSearchController"/>
+	<bean id="ExchangeFormController" parent="CIAController" class="ro.cs.ts.web.controller.form.ExchangeFormController"/>
+		
+	<bean id="ShowTimeController" parent="CIAController" class="ro.cs.ts.web.controller.general.ShowTimeController"/>
+	<bean id="GetProjectTeamMembersController" parent="CIAController" class="ro.cs.ts.web.controller.general.GetProjectTeamMembersController"/>
+	<bean id="GetProjectActivitiesController" parent="CIAController" class="ro.cs.ts.web.controller.general.GetProjectActivitiesController"/>
+		
+	<!--  REPORTS -->	
+	<bean id="ReportProjectController" parent="CIAController" class="ro.cs.ts.web.controller.form.ReportProjectController"/>
+	<bean id="ReportTimeSheetController" parent="CIAController" class="ro.cs.ts.web.controller.form.ReportTimeSheetController"/>
+	<bean id="ReportTimeSheetPersonSearchController" parent="CIAController" class="ro.cs.ts.web.controller.form.ReportTimeSheetPersonSearchController"/>
+	
+	<!-- ==================================== END CONTROLERS ===================================== -->		
+			
+	<bean id="simpleUrlMapping"	class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="httpInterceptor" />
+				<ref bean="localeInterceptor" />
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				<!-- TS MAIN ENTRY POINT -->
+				<prop key="/Main.htm">MainController</prop>
+				
+				<!-- TIME SHEET -->
+				
+				<!-- RECORD -->
+				<prop key="/RecordSearch.htm">RecordSearchController</prop>
+				<prop key="/RecordForm.htm">RecordFormController</prop>
+				<prop key="/RecordView.htm">RecordViewController</prop>
+				<prop key="/RecordBillable.htm">RecordBillableController</prop>				
+				
+				<!-- PROJECT -->
+				<prop key="/ProjectSearch.htm">ProjectSearchController</prop>
+				<prop key="/ProjectDetails.htm">ProjectDetailsController</prop>
+				<prop key="/ProjectListTeamMembers.htm">ProjectListTeamMembersController</prop>		
+				<prop key="/ProjectView.htm">ProjectViewController</prop>
+				<prop key="/Home.htm">HomeController</prop>
+				<prop key="/ProjectDetailsExtended.htm">ProjectDetailsExtended</prop>
+				
+				<!-- ACTIVITY -->
+				<prop key="/Activity.htm">ActivityController</prop>
+				<prop key="/ActivitySearch.htm">ActivitySearchController</prop>
+				<prop key="/ActivityBillingInformations.htm">ActivityBillingInformationsController</prop>
+				<prop key="/ActivityView.htm">ActivityViewController</prop>
+				<prop key="/ActivityBillable.htm">ActivityBillableController</prop>				
+				
+				<!-- PERSON -->
+				<prop key="/PersonSearch.htm">PersonSearchController</prop>
+				<prop key="/PersonDetail.htm">PersonDetailController</prop>
+				<prop key="/PersonView.htm">PersonViewController</prop>
+								
+				<!-- TEAM MEMBER DETAIL -->			
+				<prop key="/TeamMemberDetail.htm">TeamMemberDetailController</prop>
+				<prop key="/TeamMemberView.htm">TeamMemberViewController</prop>
+				
+				<!--  NOTIFICATION -->
+				<prop key="/SearchNotification.htm">NotificationSearchController</prop>
+				<prop key="/NotificationSettings.htm">NotificationSettingsController</prop>
+				<prop key="/NotificationLanguage.htm">NotificationLanguageController</prop>
+				
+				
+				<!-- COST SHEET -->
+				<prop key="/CostSheetSearch.htm">CostSheetSearchController</prop>
+				<prop key="/CostSheetForm.htm">CostSheetFormController</prop>
+				<prop key="/CostSheetView.htm">CostSheetViewController</prop>
+				<prop key="/CostSheetBillable.htm">CostSheetBillableController</prop>
+				
+				<!-- CURRENCY -->
+				<prop key="/CurrencySearch.htm">CurrencySearchController</prop>
+				<prop key="/CurrencyForm.htm">CurrencyFormController</prop>
+						
+				<!-- EXCHANGE -->
+				<prop key="/ExchangeSearch.htm">ExchangeSearchController</prop>
+				<prop key="/ExchangeForm.htm">ExchangeFormController</prop>
+					
+				<prop key="/ShowTime.htm">ShowTimeController</prop>
+				<prop key="/GetProjectTeamMembers.htm">GetProjectTeamMembersController</prop>
+				<prop key="/GetProjectActivities.htm">GetProjectActivitiesController</prop>
+				
+				<!--  REPORTS -->
+				<prop key="/ReportProject.htm">ReportProjectController</prop>
+				<prop key="/ReportTimeSheet.htm">ReportTimeSheetController</prop>
+				<prop key="/ReportTimeSheetPersonSearch.htm">ReportTimeSheetPersonSearchController</prop>
+			</props>
+		</property>
+	</bean>
+					
+	<!-- ==========================================RESOLVERS========================================= -->
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="209715200" />
+		<!-- ADICA 200MB -->
+	</bean>
+	
+	<bean id="exceptionResolver" class="ro.cs.ts.web.common.ExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">Exception</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="themeResolver" class="ro.cs.ts.web.theme.CustomThemeResolver"/>
+		
+	<!-- =======================================END===RESOLVERS========================================= -->
+	
+	<!-- =====================================INTERCEPTORS======================================== -->
+	
+
+	<bean id="httpInterceptor" class="ro.cs.ts.web.interceptor.HttpInterceptor" />
+
+	<bean id="localeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName"><value>siteLanguage</value></property>
+	</bean>
+	<!-- =====================================END INTERCEPTORS==================================== -->
+	
+	<!-- ====================================== JOB-URI ================================================ -->
+	<bean name="CleanTSContext" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="ro.cs.ts.job.CleanTSContext"/>
+	</bean>
+	
+	<bean name="NotificationPercentage" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="ro.cs.ts.job.NotificationPercentage"/>
+	</bean>
+	
+	<bean id="simpleTriggerCleanTSContext" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="CleanTSContext"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="43200000"/><!-- in milisecunde: 12h -->
+	</bean>
+	
+	<bean id="simpleTriggerNotificationPercentage" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="NotificationPercentage"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="21600000"/><!-- in milisecunde: 6h -->	
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+			 	<ref bean="simpleTriggerCleanTSContext"/>
+			 	<ref bean="simpleTriggerNotificationPercentage"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ======================================END JOB-URI ================================================ -->	
+</beans>

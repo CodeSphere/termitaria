@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  ======================== PROJECT DETAILS===================================
+ -->
+ <hibernate-mapping auto-import="true" default-lazy="false">
+ 	<class name="ro.cs.ts.entity.ProjectDetails" entity-name="ProjectDetailsSimple" table="projectdetail">
+ 		<id name="projectDetailId" column="PROJECTDETAILID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="projectId" column="PROJECTID"/>
+ 		<property name="status" column="STATUS"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.ProjectDetails" entity-name="ProjectDetails" table="projectdetail">
+ 		<id name="projectDetailId" column="PROJECTDETAILID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="projectId" column="PROJECTID"/>
+ 		<property name="budget" column="BUDGET"/>
+ 		<property name="budgetCurrencyId" column="BUDGETCURRENCY"/>
+ 		<property name="notificationPercentage" column="NOTIFICATIONPERCENTAGE"/>
+ 		<property name="completenessPercentage" column="COMPLETENESSPERCENTAGE"/>
+ 		<property name="observation" column="OBSERVATION"/>
+ 		<property name="status" column="STATUS"/>
+ 		<property name="notificationStatus" column="NOTIFICATIONSTATUS"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.ProjectDetails" entity-name="ProjectDetailsForUpdate" table="projectdetail">
+ 		<id name="projectDetailId" column="PROJECTDETAILID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="projectId" column="PROJECTID"/>
+ 		<property name="budget" column="BUDGET"/>
+ 		<property name="budgetCurrencyId" column="BUDGETCURRENCY"/>
+ 		<property name="notificationPercentage" column="NOTIFICATIONPERCENTAGE"/>
+ 		<property name="completenessPercentage" column="COMPLETENESSPERCENTAGE"/>
+ 		<property name="observation" column="OBSERVATION"/>
+ 		<property name="notificationStatus" column="NOTIFICATIONSTATUS"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.ProjectDetails" entity-name="ProjectDetailsSimpleWithBudgetCurrencyId" table="projectdetail">
+ 		<id name="projectDetailId" column="PROJECTDETAILID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="budgetCurrencyId" column="BUDGETCURRENCY"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.ProjectDetails" entity-name="ProjectDetailsUpdateNotificationStatus" table="projectdetail">
+ 		<id name="projectDetailId" column="PROJECTDETAILID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="notificationStatus" column="NOTIFICATIONSTATUS"/>
+ 	</class>
+ 	
+ </hibernate-mapping>

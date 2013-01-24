@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--    This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+    -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://localhost:8080/TS/services/schemas/messages" 
+		xmlns:tns="http://localhost:8080/TS/services/schemas/messages" 
+		elementFormDefault="qualified">
+
+	<!-- ====================================== SCHEMA ELEMENTS =============================================================== -->
+	
+	<!-- ====================== SCHEMA ELEMENTS FOR TS WEB SERVICE AS REPORTS DATA SOURCE ================================== -->
+	
+	<element name="ProjectReportDatasourceRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="getDataCriteria" type="tns:ProjectReportGetDataCriteria"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="ProjectReportDatasourceResponse">
+		<complexType>
+			<sequence>
+				<element name="records" minOccurs="0" maxOccurs="1" type="tns:Records"/>
+				<element name="costSheets" minOccurs="0" maxOccurs="1" type="tns:CostSheets"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="TimeSheetReportDatasourceRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="getDataCriteria" type="tns:TimeSheetReportGetDataCriteria"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="TimeSheetReportDatasourceResponse">
+		<complexType>
+			<sequence>
+				<element name="records" minOccurs="0" maxOccurs="1" type="tns:Records"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- ====================== END SCHEMA ELEMENTS FOR TS WEB SERVICE AS REPORTS DATA SOURCE ============================== -->
+	
+	<!-- ======================================  END SCHEMA ELEMENTS ========================================================== -->
+	
+	
+	<!-- ======================================  SCHEMA TYPES ================================================================= -->
+
+	<complexType name="TSEndpointExceptionBean">
+		<all>
+			<element name="code" type="string"/>
+			<element name="message" type="string"/>
+		</all>
+	</complexType>
+	
+
+	<!-- ====================== SCHEMA TYPES FOR TS WEB SERVICE AS REPORTS DATA SOURCE ================================ -->
+	
+	<complexType name="ProjectReportGetDataCriteria">
+		<sequence>
+			<element name="startDate" minOccurs="0" type="date"/>
+			<element name="endDate" minOccurs="0" type="date"/>
+			<element name="projectId" minOccurs="0" type="string"/>
+			<element name="billable" minOccurs="0" type="string"/>
+			<element name="currencyId" minOccurs="0" type="string"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="TimeSheetReportGetDataCriteria">
+		<sequence>
+			<element name="startDate" minOccurs="0" type="date"/>
+			<element name="endDate" minOccurs="0" type="date"/>
+			<element name="projectId" minOccurs="0" type="string"/>
+			<element name="billable" minOccurs="0" type="string"/>
+			<element name="currencyId" minOccurs="0" type="string"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="RecordDataBean">
+		<sequence>
+			<element name="recordOwnerName" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="activityName" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="time" minOccurs="0" maxOccurs="1" type="int"/>
+			<element name="startTime" minOccurs="0" maxOccurs="1" type="date"/>
+			<element name="endTime" minOccurs="0" maxOccurs="1" type="date"/>
+			<element name="overTimeTime" minOccurs="0" maxOccurs="1" type="int"/>
+			<element name="overTimeStartTime" minOccurs="0" maxOccurs="1" type="date"/>
+			<element name="overTimeEndTime" minOccurs="0" maxOccurs="1" type="date"/>
+			<element name="costPrice" minOccurs="0" maxOccurs="1" type="float"/>
+			<element name="billable" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="billingPrice" minOccurs="0" maxOccurs="1" type="float"/>
+			<element name="overTimeCostPrice" minOccurs="0" maxOccurs="1" type="float"/>
+			<element name="overTimeBillable" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="overTimeBillingPrice" minOccurs="0" maxOccurs="1" type="float"/>
+			<element name="projectName" minOccurs="0" maxOccurs="1" type="string"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="CostSheetDataBean">
+		<sequence>
+			<element name="costSheetReporterName" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="activityName" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="date" minOccurs="0" maxOccurs="1" type="date"/>
+			<element name="costPrice" minOccurs="0" maxOccurs="1" type="float"/>
+			<element name="billable" minOccurs="0" maxOccurs="1" type="string"/>
+			<element name="billingPrice" minOccurs="0" maxOccurs="1" type="float"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Records">
+		<sequence>
+			<element minOccurs="0" maxOccurs="unbounded" name="record" type="tns:RecordDataBean"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="CostSheets">
+		<sequence>
+			<element minOccurs="0" maxOccurs="unbounded" name="costSheet" type="tns:CostSheetDataBean"/>
+		</sequence>
+	</complexType>
+		
+	<!-- =================== END SCHEMA TYPES FOR TS WEB SERVICE AS REPORTS DATA SOURCE =============================== -->
+	
+	<!--  =====================================  END SCHEMA TYPES ======================================================== -->
+</schema>

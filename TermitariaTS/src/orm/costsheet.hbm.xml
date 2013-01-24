@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  ======================== COST SHEET========================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+ 
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheet" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="activityName" column="ACTIVITYNAME"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="date" column="DATE"/>
+		
+ 	</class>
+ 	
+ 	 <class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetForUpdate" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="activityName" column="ACTIVITYNAME"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="date" column="DATE"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetForListing" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		
+		<property name="billable" column="BILLABLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="activityName" column="ACTIVITYNAME"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="date" column="DATE"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailSimple" column="PERSONDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="costPriceCurrency" entity-name="Currency" column="COSTPRICECURRENCY" unique="true"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="billingPriceCurrency" entity-name="Currency" column="BILLINGPRICECURRENCY" unique="true"/>
+ 	</class>
+ 	
+ 	 <class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithTeamMemberDetail" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithPersonDetail" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailSimple" column="PERSONDETAILID" unique="true"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithProjectDetails" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithProjectAndTeamMemberDetails" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+ 	</class>
+ 	
+ 	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetSimple" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithCurrencies" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetWithAll" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		
+		<property name="billable" column="BILLABLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="activityName" column="ACTIVITYNAME"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="date" column="DATE"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailSimple" column="PERSONDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+ 	</class>
+ 	
+ 	 <class name="ro.cs.ts.entity.CostSheet" entity-name="CostSheetForReports" table="expense">
+ 		 <id name="costSheetId" column="EXPENSEID">
+			<generator class="native" />
+		</id>
+		<property name="billable" column="BILLABLE"/>
+		<property name="status" column="STATUS"/>
+		<property name="activityName" column="ACTIVITYNAME"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="date" column="DATE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailSimple" column="PERSONDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+ 	</class>
+ 	
+	
+</hibernate-mapping>

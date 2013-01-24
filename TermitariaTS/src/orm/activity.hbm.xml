@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  ======================== ACTIVITY==========================================
+ -->
+ <hibernate-mapping auto-import="true" default-lazy="false">
+ 	
+ 	<class name="ro.cs.ts.entity.Activity" entity-name="Activity" table="activity">
+ 		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="description" column="DESCRIPTION"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Activity" entity-name="ActivityForUpdate" table="activity">
+ 		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="description" column="DESCRIPTION"/>
+	</class>
+	
+	 <class name="ro.cs.ts.entity.Activity" entity-name="ActivitySimple" table="activity">
+ 		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="billable" column="BILLABLE"/>
+	</class>
+	
+	 <class name="ro.cs.ts.entity.Activity" entity-name="ActivityForListing" table="activity">
+		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME"/>		
+		<property name="billable" column="BILLABLE"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<many-to-one name="costPriceCurrency" entity-name="Currency" column="COSTPRICECURRENCY" unique="true" not-found="ignore"/>		
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<many-to-one name="billingPriceCurrency" entity-name="Currency" column="BILLINGPRICECURRENCY" unique="true" not-found="ignore"/>		
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<property name="description" column="DESCRIPTION"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+	</class>		
+	
+	 <class name="ro.cs.ts.entity.Activity" entity-name="ActivityWithRecords" table="activity">
+		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		
+		<set name="records" inverse="true" cascade="all">
+			<key column="ACTIVITYID"/>
+			<one-to-many entity-name="RecordForActivity" />					
+		</set>		
+	</class>
+	
+	<class name="ro.cs.ts.entity.Activity" entity-name="ActivityWithCurrencies" table="activity">
+		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>	
+		<property name="costPriceCurrencyId" column="COSTPRICECURRENCY"/>
+		<property name="billingPriceCurrencyId" column="BILLINGPRICECURRENCY"/>
+		<property name="status" column="STATUS"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Activity" entity-name="ActivityForReports" table="activity">
+		<id name="activityId" column="ACTIVITYID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME"/>		
+		<property name="billable" column="BILLABLE"/>
+		<property name="costPrice" column="COSTPRICE"/>
+		<many-to-one name="costPriceCurrency" entity-name="Currency" column="COSTPRICECURRENCY" unique="true" not-found="ignore"/>		
+		<property name="billingPrice" column="BILLINGPRICE"/>
+		<many-to-one name="billingPriceCurrency" entity-name="Currency" column="BILLINGPRICECURRENCY" unique="true" not-found="ignore"/>		
+		<property name="costTimeUnit" column="COSTTIMEUNIT"/>
+		<property name="billingTimeUnit" column="BILLINGTIMEUNIT"/>
+		<property name="status" column="STATUS"/>
+	</class>	
+	
+</hibernate-mapping>

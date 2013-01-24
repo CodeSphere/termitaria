@@ -1,0 +1,1674 @@
+/*******************************************************************************
+ * This file is part of Termitaria, a project management tool 
+ *    Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+ *     
+ *    Termitaria is free software; you can redistribute it and/or 
+ *    modify it under the terms of the GNU Affero General Public License 
+ *    as published by the Free Software Foundation; either version 3 of 
+ *    the License, or (at your option) any later version.
+ *    
+ *    This program is distributed in the hope that it will be useful, 
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ *    GNU Affero General Public License for more details.
+ *    
+ *    You should have received a copy of the GNU Affero General Public License 
+ *    along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+ ******************************************************************************/
+body, td, input, select, textarea, p
+{
+	font-family:Verdana, Arial, Helvetica, sans-serif;	font-size:11px;
+	color:#58595b;
+}
+body 
+{
+	margin:0px;
+	padding:0px 50px;
+	position:relative;
+	height:100%;
+}
+p
+{
+	margin:0px;
+}
+a img
+{
+	border: none;	
+}
+
+hr{
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+	border-color: #d7d7d7;
+}
+
+fieldset
+{
+	border: 1px solid #d7d7d7;
+	color: #58595b;
+}
+
+.button {	
+	background: url(../images/buttons/backgroundButton.jpg) repeat-x;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #58595b;
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 10px;
+	padding-bottom: 3px;
+	margin-bottom: 10px;
+	height: 20px;
+	
+}
+
+#CONTENT {
+	min-height: 500px;
+}
+
+#page {
+	display:block;
+	position:relative;
+	min-width:850px;
+	height:100%;
+}
+
+#top
+{
+	display:block;
+	position:relative;
+	height:70px;
+}
+#logo
+{
+	position:absolute;
+	left:15px;
+	top:10px;
+}
+#topmenu
+{
+	padding:3px 10px;
+	position:absolute;
+	right:0px;
+	top: 0px;
+	background:url(../images/top_menu.jpg) left top no-repeat;
+	height:19px;
+}
+#topmenu a
+{
+	display:block;
+	float:left;
+	padding:0px 5px;
+	text-decoration:none;
+	color:#F76541;
+	border-left: solid 1px #F76541;
+}
+#topmenu a.first
+{
+	border:none;
+}
+
+#userbox
+{
+	color:#58595b;
+	font-size:10px;
+	position:absolute;
+	right:10px;
+	top:30px;
+	text-align: right;
+}
+
+#organisationName {
+	color:#58595b;
+	font-size:12px;
+	font-weight: bold;
+	position:absolute;
+	right:10px;
+	top:-5px;
+	width: 500px;
+	text-align: right;
+}
+
+#userDetails {
+	/*border: 1px solid black;*/
+	color:#F76541;
+	font-size:10px;
+	position:absolute;
+	right:10px;
+	top:10px;
+	width: 500px;
+	text-align: right;
+}
+
+#clock {
+	color:#58595b;
+	font-size:11px;
+	position:absolute;
+	right:10px;
+	top:25px;
+	text-align: right;
+	width: 200px;
+}
+
+#userbox p
+{
+	margin:0px;
+	padding:0px;
+	text-align:center;
+}
+#menu
+{
+	position:relative;
+	height:33px;
+	background:url(../images/menu_middle.jpg) repeat-x top left;
+}
+#menuTable {
+	margin-left:20px;
+	height:33px;
+	background:url(../images/tab_bg.jpg) repeat-x top left;
+}
+#menuTable td {
+	background:url(../images/tab_sep.jpg) left top no-repeat;
+}
+#menuTable td.first
+{
+	background:none;
+}
+#menuTable a {
+	text-decoration:none;
+	color:#ffffff;
+	font-size:12px;
+	display:block;
+	height:27px;
+	padding:6px 20px 0px 20px;
+}
+
+#tab
+{
+	position:relative;
+	width:auto;
+	height:33px;
+	background:url(../images/tab_bg.jpg) repeat-x top left;
+}
+#tab a
+{
+	text-decoration:none;
+	color:#e2efb5;
+	font-size:12px;
+	display:block;
+	float:left;
+	background:url(../images/tab_sep.jpg) left top no-repeat;
+	height:21px;
+	padding:6px 20px;
+}
+#menuTable td:hover{
+	text-decoration: underline;
+	color: white;
+}
+#topmenu a:hover{
+	text-decoration: underline;
+}
+#tab a:hover
+{
+	color:#FFFFFF;
+}
+#tab a.first
+{
+	background:none;
+}
+#mainContentTable
+{
+	min-height:400px;
+	position:relative;
+	margin-bottom:10px;
+}
+#mainContentTable td
+{
+	vertical-align:top;
+}
+
+#contentCell
+{
+	width:100%;
+	padding:5px 5px 5px 15px;
+	height: 400px;
+}
+#afterContentCell
+{
+	padding:5px;
+}
+
+#submenuCell
+{
+	padding-top:10px;
+}
+
+#submenu
+{
+	margin-left:25px;
+	display: block;
+	position:relative;
+	background:url(../images/left_menu_bg1.jpg) top right no-repeat;
+	padding:7px 10px 5px 0px;
+	width: 100px;
+	text-align: left;
+}
+
+#submenu_footer
+{
+	position: relative;
+	right:0px;
+	top:-4px;
+	width:100%;
+	height:9px;
+	padding: 0px;
+	background:url(../images/left_menu_footer.jpg) right bottom no-repeat;
+}
+#submenu a
+{
+	display:block;
+	color:#58595b;
+	text-decoration:none;
+	padding:3px 5px 3px 10px;
+	margin:3px 0px 0px 0px;
+	text-decoration: none;
+	line-height: 12px;
+	background:url(../images/menuItemBg.png) right top repeat-y;
+}
+
+#submenu a:hover
+{
+	text-decoration:none;
+	color:#000000;
+	background:url(../images/menuItemBgHover.png) right top repeat-y;
+}
+
+#submenu a.inactive
+{
+	display:block;
+	color:rgb(155, 155, 155);
+	text-decoration:none;
+	padding:3px 5px 3px 10px;
+	margin:3px 0px 0px 0px;
+	text-decoration: none;
+	line-height: 12px;	
+	background:url(../images/menuItemBg.png) right top repeat-y;
+}
+
+#submenu a:hover.inactive
+{
+	display:block;
+	color:rgb(155, 155, 155);
+	text-decoration:none;
+	padding:3px 5px 3px 10px;
+	margin:3px 0px 0px 0px;
+	text-decoration: none;	
+	line-height: 12px;
+	background:url(../images/menuItemBg.png) right top repeat-y !important;
+}
+
+td.inactive
+{
+	color:rgb(155, 155, 155);
+	text-decoration:none;
+	line-height: 12px;	
+	background-color:rgb(239, 239, 239);
+}
+
+td.labelTdInactive
+{
+	color:rgb(155, 155, 155);
+	text-decoration:none;
+	line-height: 12px;	
+	background:url(../images/menuItemBg.png) right top repeat-y;
+}
+
+.mainContent{
+	height: auto;
+	min-height: 400px;
+}
+
+.reportWindowMainContent{
+	height: auto;
+	min-height: 400px;
+	position: relative;
+	top: 50px;
+}	
+
+* html .mainContent{
+	height: 400px;
+}
+
+#footer
+{
+	height:17px;
+	padding:3px 6px 0px 6px;
+	background:url(../images/footer.jpg) top left repeat-x;
+	text-align:right;
+	color:#FFFFFF;
+	font-size:10px;
+}
+#footer a
+{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+#footer a:hover
+{
+	text-decoration:underline;
+}
+
+#organizationOverview {
+	width: 400px; 
+	float:left; 
+	margin-top: 0px; 
+	padding-top: 0px;
+}
+
+#organizationStructure {
+	float:left; 
+	margin-top: 0px; 
+	padding-top: 0px; 
+	padding-left: 20px;
+}
+
+.contentBlock
+{
+	border:solid 1px #67b50e;
+	padding:10px;
+	margin:10px 0px;
+}
+.fullWidth
+{
+	width:100%;
+}
+.contentTable td 
+{
+	padding:3px 5px;
+}
+
+textarea, input, select 
+{
+	border:solid 1px #cccccc;
+	color:#2b2c2f;
+}
+
+.formField {
+	width: 220px !important;
+}
+
+.formFieldSearch {
+	width: 120px !important;
+}
+
+
+.formActions {
+	background-color:#e7e7e7;
+	padding:0px 10px;
+	border: 1px;
+}
+
+
+
+select.formField {
+	width: 222px !important;
+}
+
+select.formFieldSearch {
+	width: 122px !important;	
+}
+
+.button
+{
+	background:url(../images/buttonBg.jpg) repeat-x top left;
+	border:solid 1px #F76541;
+	cursor:pointer;
+	cursor:hand;
+}
+a
+{
+	color:#F76541;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.strong
+{
+	font-weight:bold;
+	color:#2b2c2f;
+}
+.tableAlternate
+{
+	border-width:1px 0px 0px 1px;
+	border-style:solid;
+	border-color:#9bcb46;
+}
+.tableAlternate td
+{
+	border-width:0px 1px 1px 0px;
+	border-style:solid;
+	border-color:#9bcb46;
+}
+.tableLineHeader td
+{
+	background-color:#F76541;
+	font-weight:bold;
+	text-align:center;
+	text-valign:middle;
+}
+.tableLineEven td
+{
+	background-color: #E2E9CA;
+	text-align:center;
+	text-valign:middle;
+}
+.tableLineSelected td
+{
+	background-color:#385822;
+	color:#FFFFFF;
+}
+.tableSearch
+{
+	border: 1px solid #d7d7d7;	
+}
+.tableInfo
+{
+	border: 1px solid #d7d7d7;	
+}
+
+.tableAdd
+{
+	
+	border: 1px solid #d7d7d7;	
+}
+
+.tableAddSpacer
+{
+	font-size: 5px;	
+}
+
+#loginContainer {
+	width: 550px;
+	margin: auto;
+	background: white;
+}
+
+#login
+{
+	margin-top:70px;
+	width:430px;
+	text-align:left;
+}
+
+#loginContent
+{
+	background:url(../images/login_bg.jpg) repeat-x left top;
+	border: 1px #67b50e;
+	padding:35px 15px 20px 15px;
+	width: 500px;
+}
+
+#loginProducts td
+{
+	background:url(../images/intro_product.jpg) no-repeat left top;
+	width:110px;
+	height:79px;
+	text-align:center;
+	vertical-align:top;
+	padding-top:8px;
+
+}
+#loginProducts td a {
+	display: block;
+	width: 90px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+
+#loginProducts td span
+{
+	color:#67b50e;
+	text-decoration:none;
+	font-size: 10px !important;
+	font-weight: bold;
+	height: 27px;
+	padding: 0px 5px;
+	display: block;	
+}
+
+#loginTable {
+	width: 400px;
+}
+
+.loginLabel {
+	text-align: right;
+	width: 200px;
+}
+
+.loginInput {
+	padding-left: 10px;
+	text-align: left;
+	width: 200px;
+}
+
+#loginButton {
+	background: url(../images/buttons/backgroundButton.jpg) repeat-x;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #58595b;
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 25px;
+	border:solid 1px green;
+}
+
+.loginErrorMessage {
+	text-align: center;
+	vertical-align: center;
+	color: red; 
+	font-size: 11px;
+	height: 50px;
+}
+
+#logoutLink {
+ 	margin: auto;
+ 	margin-right: 0px; 
+ 	width: 100px; 
+}
+
+#localMessages {
+	margin-bottom:10px;
+	width: auto;
+	padding:4px;
+	border:solid 1px #DEDEDE;
+	background: #FFFFCC;
+	/*display:none;*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.addButton {
+	width: 25px;
+	height: 15px;	
+	background:url(../images/sprite.png) no-repeat 0 -500px;cursor:pointer;
+}
+
+.removeButton {
+	width: 25px;
+	height: 15px;
+	background:url(../images/sprite.png) no-repeat 0 -450px;cursor:pointer;	
+}
+
+#required {
+	color: red;
+	font-size: 9px;
+}
+
+.hiddenRequiredAsterix{
+	color: red;
+	font-size: 9px;
+	display: none;
+}
+
+.visibleRequiredAsterix{
+	color: red;
+	font-size: 9px;
+	display: inline;
+}
+
+.requiredIndicator {
+	color: red;
+	font-size: 9px;
+}
+
+#calendarFreedayCalContainer { 
+	display:none; 
+	position:absolute; 
+	left:78px; 
+	top:58px;
+	z-index:2;
+}
+
+#change_password_error_message_div
+{
+	display: none;
+	color: red;
+}
+
+#NO_MODULES{
+	float:left;	
+}
+
+#MESSAGE{
+	float:right;
+}
+
+.chooseModuleMessage{
+	align: left;
+	font-style: italic;
+	font-size: 11px; 
+	color: grey
+}
+
+.welcomeMessage{
+	font-size: 15px;
+}
+
+.logoDisplay{
+	position:absolute;
+	right:220px;
+	top:10px; 
+	margin-right: 40px;
+}
+
+.logoWithoutBackgroundImage {
+	width: 150px; height: 40px; 
+	padding-left: 110px; padding-top: 30px; 
+	font-size: 1.7em; 
+	font-style: italic; 
+	color: #709C51;
+}
+
+
+accessDenied{
+	margin-left: 180px; 
+	margin-top: 50px; 
+	padding: 20px; 
+	border: 1px dotted red; 
+	width: 200px;
+}
+/* LIST RESULTS ----------------BEGIN-------------------------------------- */
+
+.list_results_header th {
+	background: url(../images/backgroundListResultsHeader.jpg) repeat-x;
+	color: #59585D; 
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	border: 1px solid #F76541;
+	height: 25px;
+	max-height: 25px;
+	padding-left: 0px;
+}
+
+.list_results {
+	border: 0px;
+	border-collapse: collapse;
+	border-spacing: 3px;
+	
+}
+
+.list_results td {
+	border: 1px solid #F76541;
+	vertical-align: middle;
+	text-align: left;
+	height: 10px;
+	padding-left: 10px;
+}
+
+.list_results .checkBox {
+	padding: 0px;
+}
+
+
+
+.even_row{
+	background: #ececec;
+	color: white;
+	vertical-align: middle;
+}
+
+.odd_row {
+	background: white;
+	color: black;
+	vertical-align: middle;
+}
+
+.list_results tr:hover td {
+	background: #F9966B;
+	color: black;
+}
+.list_results tr:hover a {
+	color: black;
+}
+
+.hover_tr {
+	background: #F9966B;
+	color: black;
+}
+.selected_row td {
+	background: #627b51;
+	color: #FFFFFF;
+}
+
+.actionsTable {
+	vertical-align: middle;
+	border: 0px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.actionsTable td {
+	width: 20px;
+	border: none;
+	vertical-align: middle;
+}
+
+#isAdmin {
+	background:url("../images/isAdmin.png");
+	width: 16px;
+	height: 16px;
+	margin: auto;
+	margin-right: 0px;
+	margin-top: 0px;
+}
+
+/* LIST RESULTS ------------------END------------------------------------- */
+
+/* PAGINATION -------------------BEGIN------------------------------------ */
+
+#cs_pagination {
+	display:block;
+	text-align:left;
+	height:25px;
+	clear:both;
+	padding-top:3px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10px;
+	font-weight:normal;
+}
+
+#cs_pagination .number {
+	color: #484848;
+	background-color: #FFFFFF;
+	border: 1px solid #B0D76D;
+	padding: 1px 5px;
+	margin:0px !important;
+}
+
+#cs_pagination a, #cs_pagination span {
+	margin-top:2px;
+	display:block;
+}
+
+#cs_pagination a:hover {
+	text-decoration: none;
+}
+
+#cs_pagination .imgButton {
+	margin:0px;
+}
+
+#cs_pagination span.active {
+	background-color: #E5EFD6 !important;
+}
+
+
+
+#cs_pagination select {
+	padding:7px;
+	padding-top:2px;
+	padding-bottom:2px;
+	border:1px solid #EBEBEB;
+	margin-left:10px;
+	text-decoration:none;
+	background-color:#F5F5F5;
+	color:black;
+	cursor:default;
+	font-size: 10px;
+}
+
+
+/* PAGINATION -------------------END------------------------------------ */
+.tsReportPersSearchScrollingDiv {
+	width: 745px; 
+	height: 365px;
+	overflow-y: scroll; 
+	scrollbar-arrow-color:blue; 
+	scrollbar-face-color: #e7e7e7; 
+	scrollbar-3dlight-color: #a0a0a0; 
+	scrollbar-darkshadow-color: #888888;
+}
+
+.successMessagesDiv, .errorMessagesDiv, .infoMessagesDiv, .warningMessagesDiv {
+	width: 500px;
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:0px 0px 0px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	display: block;
+}
+
+.errorMessagesDiv {
+	color: #D8000C;
+	background-color: #F76541;
+	background-image: url('../../../images/messages/error.png');
+}
+
+.errorMessagesTable td {
+	color: #D8000C;
+}
+
+.successMessagesDiv {
+	color: #4F8A10;
+	background-color: #E58A86;
+	background-image: url('../../../images/messages/success.png');
+		
+}
+
+.warningMessagesDiv {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../../../images/messages/warning.png');
+}
+
+.infoMessagesDiv {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('../../../images/messages/info.png');
+}
+
+.validationErrorMessage {
+	color: red;
+}
+
+.messagesCloseButon {
+	background: white; 
+	width:13px;
+	height:13px; 
+	margin: auto; 	
+	margin-top:3px; 
+	margin-right:3px;	
+	cursor:pointer;
+	padding: 0px;
+	background-image: url('../images/closeGrey_old.gif');
+}
+
+.successPanelMessagesDiv, .errorPanelMessagesDiv, .infoPanelMessagesDiv, .warningPanelMessagesDiv {
+	width: 350px;
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:0px 0px 0px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	display: block;
+}
+
+.errorPanelMessagesDiv {
+	color: #D8000C;
+	background-color: #F76541;
+	background-image: url('../../../images/messages/error.png');
+}
+
+.successPanelMessagesDiv {
+	color: #4F8A10;
+	background-color: #F76541;
+	background-image: url('../../../images/messages/success.png');
+		
+}
+
+.warningPanelMessagesDiv {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../../../images/messages/warning.png');
+}
+
+.infoPanelMessagesDiv {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('../../../images/messages/info.png');
+}
+
+
+.section_title {
+	margin-top: 10px;
+	font-size: 14px;
+	font-weight: bold;
+	color:#F76541;
+	display: block;
+	margin-bottom: 20px;
+	
+}
+
+
+.userName {
+	margin-top: 10px;
+	font-size: 14px;
+	font-weight: bold;
+	font-style: italic;
+	display: block;
+	color: rgb(22, 127, 0);
+	padding-left: 20px;
+	margin-bottom: 10px;
+}
+
+.subsection_title {
+	font-size: 13px;
+	font-weight: bold;
+	color:#F76541; 
+}
+
+#LOGO_PICTURE_CONTENT {
+	border: 1px solid #d7d7d7; 
+	height: 50px;
+	width: 120px;
+}
+
+#ACTUAL_PERSON_PICTURE_CONTENT {
+	border: 1px solid #d7d7d7; 
+	height: 120px;
+	width: 100px;
+}
+
+.organigram {
+	border: 1px solid gray;
+}
+
+.department{
+	font-size: 11px;
+	font-weight: bold;
+	background-color: rgb(206, 231, 206);
+	border: 1px solid gray;
+	padding: 5px;
+}
+
+.departmentNode{
+	font-size: 11px;
+}
+
+.organisationNode{
+	font-size: 13px;
+	font-weight: bold;
+	font-style: italic
+}	
+
+.employee {
+	font-size: 9px;
+	border: 1px solid gray;
+}
+
+.employeeNode {
+	font-size: 9px;
+}
+
+.organigram_table {
+	border: 0px;
+	padding: 0;
+	margin: 0;
+	border-collapse: collapse;
+	/*border: 1px solid black;*/
+}
+.line_container {
+	position: relative;
+	margin: 0px;
+}
+
+.line_vert {
+	margin: auto;
+	width: 1px;
+	height: 10px;
+	border-right: 1px dotted black;
+	
+}
+
+.line_vert2 {
+	margin: auto;
+	width: 1px;
+	height: 20px;
+	border-right: 1px dotted black;
+}
+
+.line_vert_invisible {
+	margin: auto;
+	height: 10px;
+	width: 1px;
+}
+
+.line_horiz {
+	margin: auto;
+	border-top: 1px dotted black;
+	display: inline-block;
+	width: 49%;
+	padding: 0px;
+}
+
+.line_horiz_invisible {
+	margin: auto;
+	display: inline-block;
+	border-top: 0px solid green;
+	width: 49%;
+	padding: 0px;
+}
+
+.line_horiz_single {
+	margin: auto;
+	border-top: 1px dotted black;
+	display: inline-block;
+	padding: 0px;
+}
+
+.simpleContainerWithBorder {
+	margin-left: 10px;
+	margin-top: 20px;
+	padding: 3px;
+	border: 1px solid green;
+}
+
+.autoComplete{
+	width:10.90em;
+	padding-bottom:1.5em;
+}
+
+.sortLink{
+	color:#F76541;
+}
+
+
+/*tooltip begin*/
+div.tooltip {
+	width: 200px;
+	color: #fff;
+	text-align: center;
+}
+
+div.tooltip h4 {
+	color: #fff;
+	font-weight: bold;
+	text-shadow: 2px 2px 1px #222;
+	margin: 0;
+	padding: 13px 10px 5px;
+	background: url(/OM/themes/standard/css/balloon.png) top left no-repeat !important;
+	background: url(/OM/themes/standard/css/balloon.gif) top left no-repeat;
+	font-size: 11px;
+}
+
+div.tooltip p {
+	margin: 0;
+	padding: 0 10px 15px;
+	text-shadow: 2px 2px 1px #222;
+	background: url(/OM/themes/standard/css/balloon.png) bottom left no-repeat !important;
+	background: url(/OM/themes/standard/css/balloon.gif) bottom left no-repeat;
+	font-size: 10px;
+}
+/*tooltip end*/
+
+.noSearchResults {
+	position: relative;
+	font-size: 12px;
+	font-style: italic;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	text-align: center;
+}
+
+.notDefined {
+	font-size: 11px;
+	font-style: italic;
+	margin: auto;	
+	text-align: left;
+}
+
+.noFindResults {
+	font-size: 12px;
+	font-style: italic;
+	margin: auto;	
+	text-align: left;
+}
+
+.noFindResultsSmall {
+	font-size: 10px;
+	font-style: italic;
+	margin: auto;	
+	text-align: left;
+}
+
+.selectTitle {
+	font-size: 10px;
+	font-style: italic;	
+	font-weight: bold;		
+}
+
+/*Organisation Overivew begin */
+
+.topTreeFormat {
+	color: #F76541; 
+	font-size:13px; 
+	font-weight:bold;
+}
+
+.organisationOverviewTreeNull{
+	color: red;
+	font-size: 13px;
+	font-style:italic; 
+}
+
+#treeDiv1 {
+	color:#F76541;
+	font-size:10px;
+	display: run-in;
+	
+}
+}
+
+/*Organisation Overivew end */
+
+/*Organisation Branches begin */
+
+/* Department and Person info panel size*/
+.yuiInfoPanel {
+	overflow:auto;	
+}
+
+.branchScroll {
+	 position: relative;
+	 overflow: auto; 
+	 background-color: fff;
+	 text-align: left;
+	 max-height: 200px;
+	 height: expression( this.scrollHeight > 200 ? "200px" : "auto" ); 
+	 width: 300px;
+}
+
+.branch_list_results {
+	border: 1px solid green;
+	padding: 0; 
+	cell-spacing: 0;
+}
+
+.menuDisplayNone {
+	display: none;
+}
+
+.menuDisplayTableCell {
+	display: table-cell;
+}
+
+/*Organisation Branches end */
+
+.personNoJobsResults {
+	font-size: 12px;
+	font-style: italic;
+	margin: auto;
+	margin-top: 50px;
+	text-align: center;
+}
+
+
+/*Organigram*/
+
+.nodeDept {
+	font-size: 12px;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+.nodeOrg {
+	font-size: 12px;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+.nodeManager {
+	font-size: 10px;
+	color: #000000;
+	margin-left: 20px;
+	cursor: pointer;
+	width: 150px;
+	text-align: center;
+}
+
+.viewEmployeesLink {
+	font-size: 10px;
+	margin-left: 20px;
+	cursor: pointer;
+	width: 150px;
+	text-align: center;
+	display: block;
+}
+
+.noPaddingTd {
+	padding: 0px;
+	margin: 0px;
+}
+
+/*Organigram End*/
+.labelTd {
+	text-align: right;
+	padding-left: 10px;
+}
+
+.labelTdReportsForm {
+	text-align: right;
+	padding-left: 10px;
+	width: 120px;
+}
+
+
+.labelJobs {
+	position: relative;
+	text-align: right;
+	padding-left: 10px;
+	top: 3px;
+	left: 0px;
+}
+
+.labelInfoTd {
+	text-align: right;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.labelTitle {
+	color:#F76541;
+	font-size: 11px;
+	text-align: left;
+	font-weight: bold;
+}
+
+.labelLegend {
+	color:#F76541;
+	font-size: 11px;
+	text-align: left;
+	font-weight: bold;
+	font-style:italic
+}
+
+.spacing_div
+{
+	padding-bottom: 10px;
+}
+
+#ownerAutoCompleteContainer {
+	width: 220px;
+}
+
+
+#myManagerAutoComplete {
+	width: 120px;
+}
+
+#replacementAutoCompleteContainer {
+	width: 220px;
+}
+
+/* BROWSE BUTTON START */
+div.fileinputs {
+	position: relative;
+}
+
+div.fakefileIE {
+	position: absolute;
+	top: 13px;
+	left:-50px;
+	z-index: 1;
+	cursor:pointer;
+}
+
+div.fakefileFF {
+	position: absolute;
+	top: 15px;
+	left: 0px;
+	z-index: 1;
+	cursor:pointer;
+}
+
+div.fakefileChrome {
+	position: absolute;
+	top: 20px;
+	left: 60px;
+	z-index: 1;
+	cursor:pointer;
+}
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+/* BROWSE BUTTON END */
+
+.passwordGenerateSentByEmail {
+	font-style: italic;
+	padding-left: 2px;
+}
+
+.buttonFileBrowse
+{
+	position: relative;
+	background:url(../images/buttonBg.jpg) repeat-x top left;
+	border:solid 1px #F76541;
+	cursor:pointer;
+	cursor:hand;
+	top: 1px;
+	height: 17px;
+}
+
+
+/* YUI SMALLLOADING PANEL START */
+
+/* Provide skin for default Panel elements, ontop of container-core.css */
+#smallLoading_c.yui-panel-container.shadow .underlay { 
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+	}
+	
+#smallLoading.yui-panel .container-close {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* span:hover not supported on IE6 */
+#smallLoading.yui-panel .container-close:hover {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .hd { 
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .bd {
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .ft {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* Provide skin for custom elements */
+#smallLoading.yui-panel .hd span {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .hd .tl {
+	overflow:hidden;	
+	border:0px solid #aeaeae;
+	background-color:#FFF;
+	}
+	
+#smallLoading.yui-panel .hd .tr {
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* YUI SMALLLOADING PANEL END */
+
+/* YUI TIME PANEL START */
+
+#TimePanel_c.yui-panel-container.shadow .underlay { 
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* Style the header with its associated corners */
+#TimePanel.yui-panel  {
+
+	position:relative;
+	padding:5px;
+	background-color:#F7F9FB;
+	border:1px solid #7B9EBD;
+	float:left;
+	_overflow:hidden; /* IE6 only, to clip iframe shim */
+}
+
+#TimePanel.yui-panel .hd  {
+	color:#000;
+	background:url(../../images/calendar/calgrad.png) repeat-x;
+	border:0px solid #7B9EBD;
+}
+
+#TimePanel.yui-panel .hd span {
+	vertical-align:middle;
+	line-height:15px;
+	font-weight:italic;		
+}
+
+#TimePanel.yui-panel .bd {	
+	background-color:#F7F9FB;
+	border:0px solid #FFF;
+}
+
+/* YUI TIME PANEL END */
+
+.buttonTime {
+	background: url(../images/buttons/backgroundButton.jpg) repeat-x;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #58595b;
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 10px;
+	padding-bottom: 3px;
+	margin-bottom: 10px;
+	height: 20px;
+	
+}
+
+/* Report HTML Format toolbar*/
+.reportActionsToolbar_table {
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	height: 25px;
+}
+
+#toolbarDiv
+{
+	position:relative;
+	top:20px;
+	left:35px;
+	height:33px;
+}
+
+/* YUI SMALLLOADING PANEL START */
+
+/* Provide skin for default Panel elements, ontop of container-core.css */
+#smallLoading_c.yui-panel-container.shadow .underlay { 
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+	}
+	
+#smallLoading.yui-panel .container-close {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* span:hover not supported on IE6 */
+#smallLoading.yui-panel .container-close:hover {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .hd { 
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .bd {
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .ft {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+/* Provide skin for custom elements */
+#smallLoading.yui-panel .hd span {
+	overflow:hidden;	
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+	
+#smallLoading.yui-panel .hd .tl {
+	overflow:hidden;	
+	border:0px solid #aeaeae;
+	background-color:#FFF;
+	}
+	
+#smallLoading.yui-panel .hd .tr {
+	overflow:hidden;
+	border:0px solid #FFF;
+	background-color:#FFF;
+}
+
+.separation {
+	border-right: 1px dotted #F2EDEF;
+	width:0px;
+	height:500px;
+} 
+
+.menuDisplayTableCell {
+	display: table-cell;
+}
+
+.menuTableSubmenu {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	
+	position:absolute;
+	top:30px;
+	width:150px;
+	z-index:3;
+	display:none;
+}
+
+.menuTableSubmenuHover {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	
+	position:absolute;
+	top:30px;
+	width:150px;
+	z-index:3;
+	display:block;
+}
+
+.menuTableSubmenu li {
+	margin:0;
+	background-color: #78AB46;
+	border-bottom:1px solid #EDF1F4;
+	height: 25px;
+}
+
+.menuTableSubmenu li a {
+	font-size:10px;	
+	display:inline;
+}
+
+
+
+.menuTableSubmenu li:hover {
+	background-color: #5E9A2E;
+}
+
+.addActionStyle {
+	text-decoration: none; 
+	color: black; 
+	font-weight: normal; 
+	font-size: 0.8em;
+}
+
+/* The hint to Hide and Show */
+.hint {
+   	display: none;
+    position: absolute;   
+    width: 120px;
+    margin-top: -4px;
+    border: 1px solid #c93;
+    padding: 10px 12px;
+    /* to fix IE6, I can't just declare a background-color,
+    I must do a bg image, too!  So I'm duplicating the pointer.gif
+    image, and positioning it so that it doesn't show up
+    within the box */
+    background: #ffc url(pointer.gif) no-repeat -10px 5px;
+}
+
+/* The pointer image is hadded by using another span */
+.hint .hint-pointer {
+    position: absolute;
+    left: -10px;
+    top: 5px;
+    width: 10px;
+    height: 19px;
+    background: url(pointer.gif) left top no-repeat;
+}
+
+.hasClientClosed{color:#4AA02C;}
+.hasClientAborted{color:red;}
+.hasClientOpened{color:#000000;}
+.noClientOpened{color:brown;}
+.noClientClosed{color:#3BB9FF;}
+.noClientAborted{color:#8D38C9;}
+.chooseProject{color:#000000;}
+.fromOrganization{color:#000000;}
+.allProjects{color:#000000;}
+									
+
+/* YUI SMALLLOADING PANEL END */
+
+sup{
+	font-size: 0.6em;
+	cursor: default;
+}
+
+.smallExplanatoryText {
+	font-size: 0.75em; 
+	color: black; 
+	font-weight: normal; 
+	margin-top: 2px;
+}
+
+.headerLogo {
+	margin-bottom: 3px;
+	font-size: 1em;
+	text-decoration: none;
+}

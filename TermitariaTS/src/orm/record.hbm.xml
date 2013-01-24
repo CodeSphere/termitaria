@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  =============================== RECORD ====================================
+ -->
+ <hibernate-mapping auto-import="true" default-lazy="false">
+ 	
+ 	<class name="ro.cs.ts.entity.Record" entity-name="Record" table="record">
+ 		<id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="activityId" column="ACTIVITYID"/>
+		<property name="startTime" column="STARTTIME"/>
+		<property name="endTime" column="ENDTIME"/>
+		<property name="time" column="TIME"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="title" column="TITLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="overTimeStartTime" column="OVERTIMESTARTTIME"/>
+		<property name="overTimeEndTime" column="OVERTIMEENDTIME"/>
+		<property name="overTimeTime" column="OVERTIMETIME"/>
+		<property name="overTimeBillable" column="OVERTIMEBILLABLE"/>
+		<property name="status" column="STATUS"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+ 	</class>
+ 	
+ 	 <class name="ro.cs.ts.entity.Record" entity-name="RecordForUpdate" table="record">
+ 		<id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="activityId" column="ACTIVITYID"/>
+		<property name="startTime" column="STARTTIME"/>
+		<property name="endTime" column="ENDTIME"/>
+		<property name="time" column="TIME"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="title" column="TITLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="overTimeStartTime" column="OVERTIMESTARTTIME"/>
+		<property name="overTimeEndTime" column="OVERTIMEENDTIME"/>
+		<property name="overTimeTime" column="OVERTIMETIME"/>
+		<property name="overTimeBillable" column="OVERTIMEBILLABLE"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+ 	</class>
+ 	
+ 	 <class name="ro.cs.ts.entity.Record" entity-name="RecordSimple" table="record">
+ 		<id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="teamMemberDetailId" column="TEAMMEMBERDETAILID"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="activityId" column="ACTIVITYID"/>
+		<property name="status" column="STATUS"/>
+		<property name="personDetailId" column="PERSONDETAILID"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordForActivity" table="record">
+ 		<id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>		
+		<property name="activityId" column="ACTIVITYID"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordForListing" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="startTime" column="STARTTIME"/>
+		<property name="endTime" column="ENDTIME"/>
+		<property name="time" column="TIME"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="title" column="TITLE"/>
+		<property name="observation" column="OBSERVATION"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="overTimeStartTime" column="OVERTIMESTARTTIME"/>
+		<property name="overTimeEndTime" column="OVERTIMEENDTIME"/>
+		<property name="overTimeTime" column="OVERTIMETIME"/>
+		<property name="overTimeBillable" column="OVERTIMEBILLABLE"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailWithCurrency" column="PERSONDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailWithAll" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with an Activity -->
+		<many-to-one name="activity" entity-name="ActivityForListing" column="ACTIVITYID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordWithProjectAndTeamMemberDetails" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordWithProjectDetails" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordWithTeamMemberDetail" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailSimple" column="TEAMMEMBERDETAILID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordWithPersonDetail" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailSimple" column="PERSONDETAILID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordForReports" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="startTime" column="STARTTIME"/>
+		<property name="endTime" column="ENDTIME"/>
+		<property name="time" column="TIME"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="overTimeStartTime" column="OVERTIMESTARTTIME"/>
+		<property name="overTimeEndTime" column="OVERTIMEENDTIME"/>
+		<property name="overTimeTime" column="OVERTIMETIME"/>
+		<property name="overTimeBillable" column="OVERTIMEBILLABLE"/>
+		<property name="status" column="STATUS"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a PersonDetail -->
+		<many-to-one name="personDetail" entity-name="PersonDetailWithCurrency" column="PERSONDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetailWithAll" column="TEAMMEMBERDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetails" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with an Activity -->
+		<many-to-one name="activity" entity-name="ActivityForReports" column="ACTIVITYID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Record" entity-name="RecordForPriceCalculation" table="record">
+		 <id name="recordId" column="RECORDID">
+			<generator class="native" />
+		</id>
+		<property name="startTime" column="STARTTIME"/>
+		<property name="endTime" column="ENDTIME"/>
+		<property name="time" column="TIME"/>
+		<property name="billable" column="BILLABLE"/>
+		<property name="overTimeStartTime" column="OVERTIMESTARTTIME"/>
+		<property name="overTimeEndTime" column="OVERTIMEENDTIME"/>
+		<property name="overTimeTime" column="OVERTIMETIME"/>
+		<property name="overTimeBillable" column="OVERTIMEBILLABLE"/>
+		<property name="status" column="STATUS"/>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>		
+		<!-- Models a many-to-one relation with a TeamMemberDetail -->
+		<many-to-one name="teamMemberDetail" entity-name="TeamMemberDetail" column="TEAMMEMBERDETAILID" unique="true"/>
+	</class>
+			
+ </hibernate-mapping>

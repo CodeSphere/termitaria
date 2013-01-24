@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+     Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+      
+     Termitaria is free software; you can redistribute it and/or 
+     modify it under the terms of the GNU Affero General Public License 
+     as published by the Free Software Foundation; either version 3 of 
+     the License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License 
+     along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ============================= TIME SHEET ==================================
+  ===========================================================================
+  ======================== EXCHANGE =========================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+	 <class name="ro.cs.ts.entity.Exchange" entity-name="Exchange" table="exchange">
+ 	 	<id name="exchangeId" column="EXCHANGEID">
+			<generator class="native" />
+		</id>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="firstCurrencyId" column="FIRSTCURRENCYID"/>
+		<property name="secondCurrencyId" column="SECONDCURRENCYID"/>
+		<property name="status" column="STATUS"/>
+		<property name="rate" column="RATE"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+	</class>
+	
+	 <class name="ro.cs.ts.entity.Exchange" entity-name="ExchangeSimple" table="exchange">
+ 	 	<id name="exchangeId" column="EXCHANGEID">
+			<generator class="native" />
+		</id>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>		
+		<property name="status" column="STATUS"/>		
+	</class>
+	
+	<class name="ro.cs.ts.entity.Exchange" entity-name="ExchangeForUpdate" table="exchange">
+ 	 	<id name="exchangeId" column="EXCHANGEID">
+			<generator class="native" />
+		</id>
+		<property name="projectDetailId" column="PROJECTDETAILID"/>
+		<property name="firstCurrencyId" column="FIRSTCURRENCYID"/>
+		<property name="secondCurrencyId" column="SECONDCURRENCYID"/>
+		<property name="rate" column="RATE"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Exchange" entity-name="ExchangeForListing" table="exchange">
+	 	<id name="exchangeId" column="EXCHANGEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+		<property name="rate" column="RATE"/>
+		<property name="organizationId" column="ORGANIZATIONID"/>
+		<!-- Models a many-to-one relation with a ProjectDetails -->
+		<many-to-one name="projectDetail" entity-name="ProjectDetailsSimple" column="PROJECTDETAILID" unique="true"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="firstCurrency" entity-name="Currency" column="FIRSTCURRENCYID" unique="true"/>
+		<!-- Models a many-to-one relation with a Currency -->
+		<many-to-one name="secondCurrency" entity-name="Currency" column="SECONDCURRENCYID" unique="true"/>
+	</class>
+	
+	<class name="ro.cs.ts.entity.Exchange" entity-name="ExchangeForDelete" table="exchange">
+ 	 	<id name="exchangeId" column="EXCHANGEID">
+			<generator class="native" />
+		</id>
+		<property name="status" column="STATUS"/>
+	</class>
+</hibernate-mapping>
