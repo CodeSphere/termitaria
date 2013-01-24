@@ -1,0 +1,162 @@
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<bean id="applicationContextProvider" class="ro.cs.logaudit.context.ApplicationContextProvider"/>
+
+    <!-- ========================= MESSAGE SOURCE DEFINITION ======================== -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="config.messages" />
+	</bean>
+	
+	<bean id="themeSource" class="ro.cs.logaudit.web.theme.CustomThemeSource">
+		<property name="basenamePrefix" value="config.theme."/>
+	</bean>
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+	<context:property-placeholder location="classpath:config/jdbc.properties"/>
+	
+	<bean id="AUDITdataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+			p:driverClassName="${audit.jdbc.driverClassName}" p:url="${audit.jdbc.url}" p:username="${audit.jdbc.username}"
+			p:password="${audit.jdbc.password}"/>
+ 
+	<!-- Hibernate SessionFactory for AUDIT -->
+	<bean id="AUDITSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+			p:dataSource-ref="AUDITdataSource" >
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${audit.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${audit.hibernate.show_sql}</prop>
+				<prop key="hibernate.generate_statistics">${audit.hibernate.generate_statistics}</prop>
+				<prop key="hibernate.default_schema">${audit.hibernate.schema}</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>orm/auditom.hbm.xml</value>
+				<value>orm/auditdm.hbm.xml</value>
+				<value>orm/auditts.hbm.xml</value>
+				<value>orm/auditcm.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="AUDITSessionFactory" />
+        </property>
+    </bean>
+    		
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+			p:sessionFactory-ref="AUDITSessionFactory">
+	</bean>
+
+	<bean id="matchAllInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    	<property name="transactionManager" ref="transactionManager"/>
+     	<property name="transactionAttributeSource">
+    		<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+  		</property>
+  	</bean>
+	
+	<!-- ================================= DAO OBJECTS =========================================== -->
+	<bean id="auditOmDao" class="ro.cs.logaudit.dao.impl.DaoAuditOmImpl">
+		<property name="sessionFactory" ref="AUDITSessionFactory"/>
+	</bean>
+	<bean id="auditDmDao" class="ro.cs.logaudit.dao.impl.DaoAuditDmImpl">
+		<property name="sessionFactory" ref="AUDITSessionFactory"/>
+	</bean>
+	<bean id="auditTsDao" class="ro.cs.logaudit.dao.impl.DaoAuditTsImpl">
+		<property name="sessionFactory" ref="AUDITSessionFactory"/>
+	</bean>
+	<bean id="auditCmDao" class="ro.cs.logaudit.dao.impl.DaoAuditCmImpl">
+		<property name="sessionFactory" ref="AUDITSessionFactory"/>
+	</bean>
+
+	<!-- ================================ END DAO OBJECTS ======================================== -->
+	
+	<!-- ================================== TRANSACTION MAPPING ================================== -->
+    
+  	<bean id="autoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    	<property name="interceptorNames">
+      	<list>
+        	<idref local="matchAllInterceptor"/>
+      	</list>
+    	</property>
+    	<property name="beanNames">
+      		<list>
+      			<idref local="auditOmDao"/>
+      			<idref local="auditDmDao"/>
+      			<idref local="auditTsDao"/>
+      			<idref local="auditCmDao"/>
+        	</list>
+    	</property>
+  	</bean>
+	
+	<!-- ========================= OM WEB SERVICE CLIENT CONFIGURATION =========================== -->
+	
+    <bean id="omWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="ro.cs.logaudit.ws.client.om.entity"/>
+        <property name="marshallerProperties">
+        	<map>
+        		<entry>
+        			<key>
+        				<value>com.sun.xml.bind.namespacePrefixMapper</value>
+        			</key>
+    				<bean class="ro.cs.logaudit.ws.client.om.NamespacePrefixMapperImpl"/>
+        		</entry>
+        	</map>
+        </property>
+    </bean>
+    
+    <bean id="omWebServiceClient" class="ro.cs.logaudit.ws.client.om.OMWebServiceClient">
+        <property name="messageFactory" ref="messageFactory"/>
+        <property name="defaultUri" value="http://localhost:8080/Termitaria/OM/services"/>
+        <property name="marshaller" ref="omWsClientMarshaller"/>
+        <property name="unmarshaller" ref="omWsClientMarshaller"/>
+        <property name="interceptors">
+			<list>
+        		<ref bean="wsClientsSecurityInterceptor"/>      		 
+        	</list>
+        </property>
+
+        <property name="objectFactory" ref="omWsAuditClientObjectFactory"/>
+    </bean>
+    
+    <bean id="omWsAuditClientObjectFactory" class="ro.cs.logaudit.ws.client.om.entity.ObjectFactory"/>
+    
+    <!-- ========== MESSAGE FACTORY USED BY OM WS CLIENT AND AUDIT WS SERVER ===================== -->
+
+	<bean id="messageFactory" class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory">
+		<property name="payloadCaching" value="true"/>
+		<property name="attachmentCaching" value="true"/>
+		<property name="attachmentCacheDir" value="C:\\Termitaria\\attachmentCacheDirAudit"/>
+		<property name="attachmentCacheThreshold" value="1024"/>
+	</bean>
+    
+    <!-- ========================= END OM WEB SERVICE CLIENT CONFIGURATION ============== -->
+</beans>

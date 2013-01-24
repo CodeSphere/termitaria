@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+	<class name="ro.cs.logaudit.entity.AuditCmBean" entity-name="auditcm" table="auditcm">
+		<id name="auditId" column="AUDITCMID">
+			<generator class="native"/>
+		</id>
+		<property name="date" column="DATE"/>
+		<property name="event" column="EVENT"/>
+		<property name="personId" column="PERSONID"/>
+		<property name="messageRO" column="MESSAGE_RO"/>
+		<property name="messageEN" column="MESSAGE_EN"/>
+		<property name="organisationId" column="ORGANISATIONID"/>
+		<property name="firstName" column="FIRSTNAME"/>
+		<property name="lastName" column="LASTNAME"/>
+	</class>
+	
+	<class name="ro.cs.logaudit.entity.AuditCmBean" entity-name="auditcmReports" table="auditcm">
+		<id name="auditId" column="AUDITCMID">
+			<generator class="native"/>
+		</id>
+		<property name="date" column="DATE"/>
+		<property name="event" column="EVENT"/>
+		<property name="personId" column="PERSONID"/>
+		<property name="messageRO" column="MESSAGE_RO"/>
+		<property name="messageEN" column="MESSAGE_EN"/>
+		<property name="firstName" column="FIRSTNAME"/>
+		<property name="lastName" column="LASTNAME"/>
+		<property name="organisationId" column="ORGANISATIONID"/>
+	</class>
+	
+	<class name="ro.cs.logaudit.entity.AuditCmBean" entity-name="auditcmForDelete" table="auditcm">
+		<id name="auditId" column="AUDITCMID">
+			<generator class="native"/>
+		</id>
+		<property name="messageRO" column="MESSAGE_RO"/>
+		<property name="messageEN" column="MESSAGE_EN"/>
+	</class>
+	
+</hibernate-mapping>	

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://localhost:8080/Audit/services/schemas/messages" 
+		xmlns:tns="http://localhost:8080/Audit/services/schemas/messages" 
+		elementFormDefault="qualified">
+
+	<!-- ====================================== SCHEMA ELEMENTS =============================================================== -->
+	
+	<!-- ====================== SCHEMA ELEMENTS FOR AUDIT WEB SERVICE AS REPORTS DATA SOURCE ================================== -->
+	
+	<element name="AuditEventsReportDatasouceRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="getDataCriteria" type="tns:AuditEventsReportGetDataCriteria"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="AuditEventsReportDatasouceResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="0" maxOccurs="unbounded" name="auditEvent" type="tns:AuditEventsReportDataBean"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- ====================== END SCHEMA ELEMENTS FOR AUDIT WEB SERVICE AS REPORTS DATA SOURCE ============================== -->
+	
+	<!-- ======================================  END SCHEMA ELEMENTS ========================================================== -->
+	
+	
+	<!-- ======================================  SCHEMA TYPES ================================================================= -->
+
+	<complexType name="AuditEndpointExceptionBean">
+		<all>
+			<element name="code" type="string"/>
+			<element name="message" type="string"/>
+		</all>
+	</complexType>
+	
+
+	<!-- ====================== SCHEMA TYPES FOR AUDIT WEB SERVICE AS REPORTS DATA SOURCE ================================ -->
+	
+	<complexType name="AuditEventsReportGetDataCriteria">
+		<sequence>
+			<element name="startDate" minOccurs="0" type="date"/>
+			<element name="endDate" minOccurs="0" type="date"/>
+			<element name="username" minOccurs="0" type="string"/>
+			<element name="message" minOccurs="0" type="string"/>
+			<element name="event" minOccurs="0" type="string"/>
+			<element name="module" minOccurs="0" type="string"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="AuditEventsReportDataBean">
+		<sequence>
+			<element name="date" minOccurs="1" maxOccurs="1" type="date"/>
+			<element name="personName" minOccurs="1" maxOccurs="1" type="string"/>
+			<element name="message" minOccurs="1" maxOccurs="1" type="string"/>
+			<element name="event" minOccurs="1" maxOccurs="1" type="string"/>
+		</sequence>
+	</complexType>
+		
+	<!-- =================== END SCHEMA TYPES FOR AUDIT WEB SERVICE AS REPORTS DATA SOURCE =============================== -->
+	
+	<!--  =====================================  END SCHEMA TYPES ======================================================== -->
+</schema>

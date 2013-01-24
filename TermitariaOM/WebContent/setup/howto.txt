@@ -6,6 +6,21 @@
 		<module>.jdbc.url=jdbc\:mysql\://localhost\:3306/<module>
 		<module>.jdbc.username=root
 		<module>.jdbc.password=password
-3. Add all your projects to Tomcat Server: TermitariaOM, TermitariaCM, TermitariaTS and TermitariaAudit.   
+3. Create the following folders 
+(or change folder path in config.properties and applicationContext.xml of each of the 3 modules):
+	C:\Termitaria\attachmentCacheDirTS
+	C:\Termitaria\attachmentCacheDirAUDIT
+	C:\Termitaria\attachmentCacheDirCM
+4. Add all your projects on Tomcat Server: TermitariaOM, TermitariaCM, TermitariaTS and TermitariaAudit.   
 
 
+------------------------------------------------------------------
+If you have troubles configuring Termitaria please contact us:
+
+Tekin Omer-Ali 
+CodeSphere Termitaria Project Team Leader
+tekin.omer-ali@codesphere.ro
+
+Dan Damian 
+Head of the Project
+dan.damian@codesphere.ro 

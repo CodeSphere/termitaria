@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+   ===========================================================================
+   =================================== LOGAUDIT ==============================
+   ===========================================================================
+  -->
+<beans>
+
+	<!-- ========================= VIEW DEFINITIONS ========================= -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="config.views"/>
+	</bean>
+	
+	<!-- ========================= DEFINITIONS OF PUBLIC CONTROLLERS ========================= -->
+
+	<!-- Common Injections Abstract Controller - CIA Controller -->
+	<bean id="CIAController" abstract="true">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- =======================================CONTROLERS========================================= -->
+	
+	<!-- first 2 Controllers to manage first entrance of one user -->
+	
+	<!-- 1 authentication page -->
+	<bean id="SignOnController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="SignOn"/>
+	</bean>
+	
+	<!-- 2 Main Audit page -->
+	<bean id="MainController" parent="CIAController" class="ro.cs.logaudit.web.controller.general.MainController"/>
+		
+	<!-- AUDIT OM-->
+	<bean id="AuditOmSearchController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditOmSearchController"/>
+	<bean id="AuditOmReportsController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditOmReportsController"/>
+	
+	<!-- AUDIT DM-->
+	<bean id="AuditDmSearchController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditDmSearchController"/>
+	<bean id="AuditDmReportsController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditDmReportsController"/>
+	
+	<!-- AUDIT CM-->
+	<bean id="AuditCmSearchController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditCmSearchController"/>
+	<bean id="AuditCmReportsController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditCmReportsController"/>
+	
+	<!-- AUDIT DM-->
+	<bean id="AuditTsSearchController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditTsSearchController"/>
+	<bean id="AuditTsReportsController" parent="CIAController" class="ro.cs.logaudit.web.controller.form.AuditTsReportsController"/>
+	
+	<bean id="ShowTimeController" parent="CIAController" class="ro.cs.logaudit.web.controller.general.ShowTimeController"/>
+	
+	<bean id="GetJsonPersonsController" parent="CIAController" class="ro.cs.logaudit.web.controller.general.GetJsonPersonsController"/>
+
+	<!-- ==================================== END CONTROLERS ===================================== -->	
+			
+	<bean id="simpleUrlMapping"	class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="httpInterceptor" />
+				<ref bean="localeInterceptor" />
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				<!-- AUDIT MAIN ENTRY POINT -->
+				<prop key="/Main.htm">MainController</prop>
+				<prop key="/SignOn.htm">SignOnController</prop>
+				
+				<!-- AUDIT OM-->
+				<prop key="/AuditOmSearch.htm">AuditOmSearchController</prop>
+				<prop key="/AuditOmReports.htm">AuditOmReportsController</prop>
+				
+				<!-- AUDIT DM-->
+				<prop key="/AuditDmSearch.htm">AuditDmSearchController</prop>
+				<prop key="/AuditDmReports.htm">AuditDmReportsController</prop>
+				
+				<!-- AUDIT CM-->
+				<prop key="/AuditCmSearch.htm">AuditCmSearchController</prop>
+				<prop key="/AuditCmReports.htm">AuditCmReportsController</prop>
+				
+				<!-- AUDIT TS-->
+				<prop key="/AuditTsSearch.htm">AuditTsSearchController</prop>
+				<prop key="/AuditTsReports.htm">AuditTsReportsController</prop>
+				
+				<prop key="/ShowTime.htm">ShowTimeController</prop>
+				<prop key="/GetJsonPersons.htm">GetJsonPersonsController</prop>
+			</props>
+		</property>
+	</bean>
+					
+	<!-- ==========================================RESOLVERS========================================= -->
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="209715200" />
+		<!-- ADICA 200MB -->
+	</bean>
+	
+	<bean id="exceptionResolver" class="ro.cs.logaudit.web.common.ExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">Exception</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="themeResolver" class="ro.cs.logaudit.web.theme.CustomThemeResolver"/>
+		
+	<!-- =======================================END===RESOLVERS========================================= -->
+	
+	<!-- =====================================INTERCEPTORS======================================== -->
+	
+
+	<bean id="httpInterceptor" class="ro.cs.logaudit.web.interceptor.HttpInterceptor" />
+
+	<bean id="localeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName"><value>siteLanguage</value></property>
+	</bean>
+	<!-- =====================================END INTERCEPTORS==================================== -->	
+</beans>

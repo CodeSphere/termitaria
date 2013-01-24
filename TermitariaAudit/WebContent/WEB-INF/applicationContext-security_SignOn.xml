@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	   		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	   		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<http entry-point-ref="authenticationEntryPoint"
+		access-denied-page="/accessDenied.jsp" access-decision-manager-ref="domainAccessDecisionManager"
+		realm="Audit">
+
+		<!-- AUDIT MAIN ENTRY POINT -->
+		<intercept-url pattern="/SignOn.htm*" access="AUDIT_Basic" />
+		<intercept-url pattern="/Main.htm*" access="AUDIT_Basic" />
+
+		<!-- AUDIT OM -->
+		<intercept-url pattern="/AuditOmSearch.htm*" access="AUDIT_Basic, AUDIT_Delete" />
+
+		<!-- AUDIT DM -->
+		<intercept-url pattern="/AuditDmSearch.htm*" access="AUDIT_Basic, AUDIT_Delete" />
+
+		<!-- Security for the rest of links -->
+		<intercept-url pattern="/*.css"  />
+		<intercept-url pattern="/*.js"  />
+		<intercept-url pattern="/*.jpg" />
+		<intercept-url pattern="/report*" />
+		<intercept-url pattern="/servlet/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<remember-me key="AuditKey" />
+
+		<form-login login-page="/SignOn.htm" login-processing-url="/j_spring_security_check"
+			default-target-url="/Main.htm" always-use-default-target="true"
+			authentication-failure-url="/SignOn.htm?login_error=1" />
+		<logout logout-url="/j_spring_security_logout"
+			invalidate-session="true" />
+
+	</http>
+
+	<authentication-manager alias="auditAuthenticationManager" />
+
+
+
+	<b:bean id="authenticationProcessingFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+
+		<http>
+			<custom-filter before="BASIC_AUTH_FILTER" ref="authenticationProcessingFilter" />
+		</http>
+
+		<b:property name="authenticationManager" ref="auditAuthenticationManager" />
+		<b:property name="defaultTargetUrl" value="/Main.htm" />
+		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
+		<b:property name="alwaysUseDefaultTargetUrl" value="true" />
+		<b:property name="authenticationFailureUrl" value="/SignOn.htm?login_error=1"></b:property>
+	</b:bean>
+
+	<b:bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint ">
+		<b:property name="loginFormUrl" value="/SignOn.htm" />
+		<b:property name="forceHttps" value="false" />
+	</b:bean>
+
+	<b:bean id="userDetailsService" class="ro.cs.logaudit.web.security.AuditUserDetailsService" />
+
+	<authentication-manager>
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder hash="sha">
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+	<!-- An access decision voter that reads permission configuration settings -->
+	<b:bean id="roleVoter" class="ro.cs.logaudit.web.security.AuditRoleVoter">
+		<b:property name="rolePrefix" value="" />
+	</b:bean>
+
+	<!-- An access decision voter that reads IS_* configuration settings -->
+	<b:bean id="isAuthenticatedAnonimouslyVoter" class="ro.cs.logaudit.web.security.AuditRoleVoter">
+		<b:property name="rolePrefix" value="IS_" />
+	</b:bean>
+
+	<!-- An access decision manager used by the business objects -->
+	<b:bean id="domainAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<b:property name="allowIfAllAbstainDecisions" value="false" />
+		<b:property name="decisionVoters">
+			<b:list>
+				<b:ref local="roleVoter" />
+				<!-- <b:ref local="isAuthenticatedAnonimouslyVoter"/> -->
+			</b:list>
+		</b:property>
+	</b:bean>
+
+
+	<!-- =========================== SOAP MESSAGE CERTIFICATE VALIDATION AND 
+		AUTHENTICATION ==================================== -->
+
+	<!-- Security interceptor used to validate and authenticate the certificates 
+		attached to the Web Service requests -->
+	<b:bean id="auditWsSecurityInterceptor"
+		class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+		<b:property name="validationActions" value="Signature" />
+		<b:property name="securementUsername" value="trustedCA" />
+		<b:property name="securementPassword" value="password" />
+		<b:property name="validationSignatureCrypto">
+			<b:bean
+				class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+				<b:property name="keyStorePassword" value="password" />
+				<b:property name="keyStoreLocation" value="/WEB-INF/truststore.jks" />
+				<b:property name="keyStoreType" value="jks" />
+				<b:property name="defaultX509Alias" value="trustedCA" />
+			</b:bean>
+		</b:property>
+		<b:property name="timestampStrict" value="true" />
+	</b:bean>
+
+	<!-- ==================== SPRING WS SECURITY CERTIFICATE MESSAGE SIGNING 
+		============ -->
+
+	<b:bean id="wsClientsSecurityInterceptor"
+		class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+		<b:property name="securementActions" value="Signature" />
+		<b:property name="securementSignatureKeyIdentifier" value="DirectReference" />
+		<b:property name="securementUsername" value="wsclient" />
+		<b:property name="securementPassword" value="password" />
+		<b:property name="securementSignatureCrypto">
+			<b:bean
+				class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+				<b:property name="keyStorePassword" value="password" />
+				<b:property name="keyStoreLocation" value="/WEB-INF/keystore.jks" />
+			</b:bean>
+		</b:property>
+	</b:bean>
+
+	<!-- ==================== END OF SPRING WS SECURITY CERTIFICATE MESSAGE 
+		SIGNING ============ -->
+
+</b:beans>
