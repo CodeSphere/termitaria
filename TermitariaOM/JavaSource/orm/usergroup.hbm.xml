@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  =========================== USERGROUP =====================================
+ -->
+ <hibernate-mapping auto-import="true" default-lazy="false">
+ 	<class name="ro.cs.om.entity.UserGroup" entity-name="UserGroupAll" table="usergroup">
+ 		<id name="userGroupId" column="USERGROUPID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+ 		<property name="name" column="NAME"/>
+ 		<property name="status" column="STATUS"/>
+ 		<property name="description" column="DESCRIPTION"/>
+ 		<!-- Many to many mapping Group x Person -->
+ 		<set name="persons" table="personxusergroup">
+ 			<key column="USERGROUPID"/>
+ 			<many-to-many column="PERSONID" entity-name="Person" not-found="ignore"/>
+ 		</set>
+ 	</class>
+ 	<class name="ro.cs.om.entity.UserGroup" entity-name="UserGroupForListing" table="usergroup">
+ 		<id name="userGroupId" column="USERGROUPID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+ 		<property name="name" column="NAME"/>
+ 		<property name="status" column="STATUS"/>
+ 		<property name="description" column="DESCRIPTION"/>
+ 	</class>
+ 	 <class name="ro.cs.om.entity.UserGroup" entity-name="UserGroupForUpdate" table="usergroup">
+ 		<id name="userGroupId" column="USERGROUPID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="name" column="NAME"/>
+ 		<property name="description" column="DESCRIPTION"/>
+ 		<!-- Many to many mapping Group x Person -->
+ 		<set name="persons" table="personxusergroup">
+ 			<key column="USERGROUPID"/>
+ 			<many-to-many column="PERSONID" entity-name="Person" not-found="ignore"/>
+ 		</set>
+ 	</class>
+ 	
+ 	<class name="ro.cs.om.entity.UserGroup" entity-name="UserGroupSimple" table="usergroup">
+ 		<id name="userGroupId" column="USERGROUPID">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="name" column="NAME"/>
+ 		<property name="status" column="STATUS"/>
+ 		
+ 		<set name="persons" table="personxusergroup">
+ 			<key column="USERGROUPID"/>
+ 			<many-to-many column="PERSONID" entity-name="Person" not-found="ignore"/>
+ 		</set>
+        
+ 		<many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+ 	</class>
+ 	
+ </hibernate-mapping>
+ 

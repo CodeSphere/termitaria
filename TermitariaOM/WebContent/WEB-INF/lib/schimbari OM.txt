@@ -1,0 +1,70 @@
+- am adaugat toate jar-urile din folderul asta
+
+- am sters spring.jar 2.5.2, spring-webmvc-sources.jar, spring-test-sources.jar
+
+- in spring security 3.1.1 au aparut unele meodificari:
+	* nu mai este ConfigAttributeDefinition si am gasit pe net asta:  Replace ConfigAttributeDefinition with List<ConfigAttribute> in clasa OMRoleVoter
+	* UserAuth nu mai returneaza GrantedAuthority[], ci Collection<GrantedAuthority>, asa ca am pus la return "toArray()" + un cast la GrantedAuthority[];
+	* in UserAuth am supraincarcat metoda setAuthority, rezultand:
+			public void setAuthorities(GrantedAuthority[] authorities) {
+				setAuthorities(Arrays.asList(authorities));
+			}
+	* schimbat AccessDeniedHandlerImpl.SPRING_SECURITY_ACCESS_DENIED_EXCEPTION_KEY cu WebAttributes.ACCESS_DENIED_403;
+	* in UserAuth am adaugat metoda
+		public GrantedAuthority[] getArrayOfAuthorities(){
+		return (GrantedAuthority[])getAuthorities().toArray();
+		}
+		
+- am modificat declararea librariilor si le-am pus pe astea:
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.token.Token;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+
+		  
+					********** MODIFICARI IN applicationContext-security.xml **********
+		  
+* schimbat din
+	<concurrent-session-control max-sessions="1" expired-url="/"/> 
+	in 
+	
+	<session-management>
+			<concurrency-control max-sessions="1" expired-url="/" />
+	</session-management>
+
+* am cuprins 
+<authentication-provider user-service-ref="userDetailsService"> 
+<password-encoder hash="sha"> </password-encoder> </authentication-provider>	
+		
+		intre <authentication-manager></authentication-manager> 
+		
+* am sters filters="none" din: 
+		<intercept-url pattern="/SignOn.htm*" filters="none" /> // nu mai exista atributul "filters"
+		si am adaugat 
+		
+			<http security="none" pattern="/SignOn.htm*" />
+
+* am comentat 	<http security="none" pattern="/SignOn.htm*" /> (ce am schimbat mai sus)
+	
+* am modificat FilterChainProxy (versiunea noua nu mai are setter-ul, iar in versiunea 3.1 se declara in parametrul respectiv in constructor)
+		* setFilterInvocationDefinitionSource(FilterInvocationDefinitionSource fids) 
+          Deprecated. Use namespace configuration or call setFilterChainMap instead. 
+		  
+* am adaugat atributul "access": 
+		<intercept-url pattern="/SignOn.htm*" access="ROLE_ANONYMOUS" />
+		
+		***************************
+		
+* in views.properties am modificat ".class" in ".(class)"  (Altfel nu incarca .jsp-urile. Ideea am gasit-o aici: 
+			http://forum.springsource.org/showthread.php?77942-ResourceBundleViewResolver-not-workin-with-spring-3-0 )

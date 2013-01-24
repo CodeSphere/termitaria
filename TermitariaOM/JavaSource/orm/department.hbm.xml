@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  ======================== DEPARTMENT =======================================
+ -->
+ 
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentSimple" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="status" column="STATUS" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="organisationId" column="ORGANISATIONID" />
+        <property name="managerId" column="MANAGERID" />
+        <property name="parentDepartmentId" column="PARENTDEPID" />        
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentSimpleWithPersons" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="status" column="STATUS" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="organisationId" column="ORGANISATIONID" />
+        <property name="managerId" column="MANAGERID" />
+        <property name="parentDepartmentId" column="PARENTDEPID" />    
+        <set name="persons" table="personxdepartment">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonAll" not-found="ignore"/>
+        </set> 
+           
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="Department" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="status" column="STATUS" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" unique="true" />
+        <!-- Models a many-to-one relation with it's Parent Department -->
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" not-found="ignore"/>
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentAll" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />
+		<!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" unique="true" not-found="ignore"/>
+		<!-- Models a many-to-one relation with a ParentDepartment -->
+        <many-to-one name="manager" entity-name="Person" column="MANAGERID" unique="true" not-found="ignore"/>
+        <set name="persons" table="personxdepartment">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonAll" not-found="ignore"/>
+        </set>
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" not-found="ignore"/>
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithOrganisation" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="status" column="STATUS" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="parentDepartmentId" column="PARENTDEPID" />
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithPersons" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />              
+        <set name="persons" table="personxdepartment">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonForUpdate" not-found="ignore"/>
+        </set>        
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />     
+        <many-to-one name="manager" entity-name="Person" column="MANAGERID" unique="true" not-found="ignore"/>               
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" not-found="ignore"/>   
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithPersonsAndJobs" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />              
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="DEPARTMENTID" />
+            <map-key-many-to-many column="PERSONID" entity-name="PersonForUpdate" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>      
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />     
+        <many-to-one name="manager" entity-name="Person" column="MANAGERID" unique="true" not-found="ignore"/>               
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" not-found="ignore"/>   
+    </class>
+                
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentForUpdate" table="department">
+    	<id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="managerId" column="MANAGERID" />
+        <property name="parentDepartmentId" column="PARENTDEPID" />
+        <map name="personWithJob" table="personxdepartment">
+            <key column="DEPARTMENTID" />
+            <map-key-many-to-many column="PERSONID" entity-name="PersonForUpdate" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>           
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentForUpdateManager" table="department">
+    	<id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>      
+        <property name="managerId" column="MANAGERID" />                      
+    </class>
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithManager" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="status" column="STATUS" />
+        <property name="parentDepartmentId" column="PARENTDEPID" />
+        <many-to-one name="manager" entity-name="Person" column="MANAGERID" not-found="ignore"/>
+    </class>
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithParent" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" />
+    </class>
+    
+	<class name="ro.cs.om.entity.Department" entity-name="DepartmentWithManagerAndParent" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="status" column="STATUS" />
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+        <many-to-one name="manager" entity-name="Person" column="MANAGERID" not-found="ignore"/>
+        <many-to-one name="parentDepartment" entity-name="Department" column="PARENTDEPID" unique="true" not-found="ignore"/>
+    </class>
+
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentForExpImp" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />
+		<!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="OrganisationForExpImp" column="ORGANISATIONID" unique="true" />
+		<!-- Models a many-to-one relation with a ParentDepartment -->
+        <many-to-one name="manager" entity-name="PersonForExpImp" column="MANAGERID" unique="true" not-found="ignore" cascade="none"/>
+        <set name="persons" table="personxdepartment" cascade="none">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonForExpImp" />
+        </set>
+        <many-to-one name="parentDepartment" entity-name="DepartmentForExpImp" column="PARENTDEPID" unique="true" not-found="ignore" cascade="none"/>
+    </class>
+    
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentForExpImp1" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />
+		<!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="OrganisationForExpImp" column="ORGANISATIONID" unique="true" />
+        <many-to-one name="parentDepartment" entity-name="DepartmentForExpImp" column="PARENTDEPID" unique="true" not-found="ignore" cascade="none"/>
+    </class>
+    
+    
+    
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentFakeFromImp1" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />
+		<!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="OrganisationForExpImp" column="ORGANISATIONID" unique="true" />
+    </class>
+    
+	<class name="ro.cs.om.entity.Department" entity-name="DepartmentFakeFromImp2" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />
+		<!-- Models a many-to-one relation with a Organisation -->
+        <many-to-one name="organisation" entity-name="OrganisationForExpImp" column="ORGANISATIONID" unique="true" />
+		<!-- Models a many-to-one relation with a ParentDepartment -->
+        <many-to-one name="manager" entity-name="PersonForExpImp" column="MANAGERID" unique="true" not-found="ignore" cascade="none"/>
+        <set name="persons" table="personxdepartment" cascade="none">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonForExpImp" />
+        </set>
+    </class>
+    <class name="ro.cs.om.entity.Department" entity-name="DepartmentWithPersonsForDelete" table="department">
+        <id name="departmentId" column="DEPARTMENTID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <property name="observation" column="OBSERVATION" />     
+                 
+        <set name="persons" table="personxdepartment" cascade="delete">
+            <key column="DEPARTMENTID" />
+            <many-to-many column="PERSONID" entity-name="PersonForDelete" not-found="ignore"/>
+        </set> 
+        
+        <many-to-one name="organisation" entity-name="OrganisationForDelete" column="ORGANISATIONID"/>
+    </class>
+    
+</hibernate-mapping>

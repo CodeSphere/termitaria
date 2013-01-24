@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="signupWizardActions" class="ro.cs.om.signupWizard.SignupWizardActions" />
+	<var name="ALL_MODULES" class="java.util.ArrayList" />
+	<var name="ORGANISATION_TYPE" class="java.util.ArrayList" />
+	<var name="GROUP_COMPANIES_TYPE" class="java.util.ArrayList" />
+	
+	<input name="organisationBean" required="true" />
+	<input name="MESSAGES" required="true" />
+	
+	<view-state id="organizationForm" view="SignupWizard/organizationForm"
+		model="organisationBean">
+
+		<on-render>
+			<evaluate result="ALL_MODULES" expression="signupWizardActions.getAllModules()" />
+			<evaluate result="ORGANISATION_TYPE"
+				expression="signupWizardActions.getOrganisationTypes()" />
+			<evaluate result="GROUP_COMPANIES_TYPE" expression="signupWizardActions.getCompanieTypes()" />
+			<evaluate result="organisationBean.modules" expression="signupWizardActions.getExistingModules()" />
+		</on-render>
+		<transition on="save" to="saveOrganisation" validate="true" />
+		<transition on="cancel" to="cancel" validate="false" />
+	</view-state>
+	
+	<action-state id="saveOrganisation">
+		<evaluate expression="signupWizardActions.saveOrganisation(organisationBean, MESSAGES)" />
+		<transition to="organisationSaved" />
+	</action-state>
+
+	<end-state id="organisationSaved" />	
+	<end-state id="cancel" />	
+</flow>

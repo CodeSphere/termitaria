@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="organisationBean" class="ro.cs.om.entity.Organisation" />
+	<var name="personBean" class="ro.cs.om.entity.Person" />
+	<var name="MESSAGES" class="java.util.ArrayList" />
+	
+	<subflow-state id="createOrganization" subflow="SignupWizard/organization">
+		<input name="organisationBean" value="organisationBean" />
+		<input name="MESSAGES" value="MESSAGES" />
+		<transition on="organisationSaved" to="createAdmin" />
+		<transition on="cancel" to="finished" />
+	</subflow-state>
+
+	<subflow-state id="createAdmin" subflow="SignupWizard/admin" >
+		<input name="personBean" value="personBean" />
+		<input name="organisationBean" value="organisationBean" />
+		<input name="MESSAGES" value="MESSAGES" />
+		<transition on="adminSaved" to="finished" />
+		<transition on="cancel" to="finished" />
+	</subflow-state>
+	
+	<end-state id="finished" view="externalRedirect:contextRelative:/" />
+
+	<global-transitions>
+		<transition on="cancel" to="finished" />
+	</global-transitions>
+
+</flow>

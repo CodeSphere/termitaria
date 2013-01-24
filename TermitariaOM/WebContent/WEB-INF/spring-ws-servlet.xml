@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:oxm="http://www.springframework.org/schema/oxm" 
+       xmlns:sws="http://www.springframework.org/schema/web-services"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       					   http://www.springframework.org/schema/util 
+       					 http://www.springframework.org/schema/util/spring-util-3.1.xsd
+       					   http://www.springframework.org/schema/oxm 
+       					   http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+       					   http://www.springframework.org/schema/web-services 
+       					   http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+       					   ">
+
+	<!-- ================================================ SERVICES ENDPOINTS DEFINITIONS ==================================================== -->
+						
+	<bean id="PayloadRootAnnotationMarshallingEndpoint" class="ro.cs.om.ws.server.PayloadRootAnnotationMarshallingEndpoint">
+		<constructor-arg ref="omWsObjectFactory"/>
+	</bean>
+	
+	<bean id="omWsObjectFactory" class="ro.cs.om.ws.server.entity.ObjectFactory"/>
+	
+	<!-- ================================================ ENDPOINT MAPPINGS ================================================================= -->
+	
+    <bean id="annotationMapping" class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+    	<property name="interceptors">
+    		<list>
+    		    <bean class="ro.cs.om.ws.server.MessageEndpointInterceptor"/>
+    		    <!-- 
+    		    <bean class="ro.cs.om.ws.server.AddAttachmentToResponseInterceptor"/>
+    		     -->
+       			<bean class="org.springframework.ws.soap.server.endpoint.interceptor.SoapEnvelopeLoggingInterceptor"/>
+       			<bean id="validatingInterceptor" class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
+    				<property name="xsdSchemaCollection" ref="messagesSchema"/>
+    				<property name="validateRequest" value="false"/>
+    				<property name="validateResponse" value="false"/>
+				</bean>	
+				<ref bean="wsSecurityInterceptor"/>
+			</list>
+   		</property>		
+ 	</bean>  
+
+    <!-- =============================================== ENDPOINT ADAPTERS  ============================================================= -->
+  
+    <bean class="org.springframework.ws.server.endpoint.adapter.GenericMarshallingMethodEndpointAdapter">
+        <property name="marshaller" ref="marshaller"/>
+        <property name="unmarshaller" ref="marshaller"/>
+    </bean>    
+
+	<!-- ================================================ WSDL DEFINITIONS ================================================================ -->
+	
+	<bean id="omServiceWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+		<property name="schemaCollection" ref="messagesSchema"/>
+		<property name="portTypeName" value="OMService"/>
+		<property name="locationUri" value="http://localhost:8080/Termitaria/OM/services"/>
+	</bean>
+	
+	<bean id="messagesSchema" class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">                 
+        <property name="xsds" value="WEB-INF/xsd/messages.xsd"/>
+        <property name="inline" value="true"/>
+	</bean>
+	
+	<!-- ================================================ MARSHALLERS ===================================================================== -->
+
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="ro.cs.om.ws.server.entity"/>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+
+	<!-- ================================================== ENDPOINT EXCEPTION RESOLVER ====================================================== -->
+
+	<!-- Exception resolver used to marshal an EndpointException (with code and message) to the details tag of
+	a SOAP Fault message, allowing to customize a fault message; the Soap faultCode is set to "SERVER" for an 
+	Endpoint Exception, while the faultString of the fault message contains by default the exception message-->
+	
+ 	<bean class="ro.cs.om.ws.server.EndpointExceptionResolver">
+    	<property name="exceptionMappings">
+            <props>
+            	<prop key="ro.cs.om.exception.EndpointException">SERVER</prop>
+            </props>
+        </property>
+        <property name="order" value="1"/>
+ 	</bean> 
+ 	
+    <bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+        <description>
+            This exception resolver maps other exceptions to SOAP Faults. Both UnmarshallingException and
+            ValidationFailureException are mapped to a SOAP Fault with a "Client" fault code.
+            All other exceptions are mapped to a "Server" error code, the default.
+        </description>
+        <property name="defaultFault" value="SERVER"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.springframework.oxm.UnmarshallingFailureException">CLIENT,Invalid request</prop>
+                <prop key="org.springframework.oxm.ValidationFailureException">CLIENT,Invalid request</prop>
+            </props>
+        </property>
+        <property name="order" value="2"/>
+    </bean>
+	
+	 
+</beans> 

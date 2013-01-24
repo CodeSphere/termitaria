@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<organisationContainers>
+    <organisationContainer>
+        <organisation>
+            <address>7 Bd-ul Iuliu Maniu, Apaca Building, 6th District, Bucharest, Romania</address>
+            <department>ro.cs.om.entity.Department120</department>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department114</department>
+            <department>ro.cs.om.entity.Department107</department>
+            <department>ro.cs.om.entity.Department122</department>
+            <department>ro.cs.om.entity.Department117</department>
+            <department>ro.cs.om.entity.Department124</department>
+            <department>ro.cs.om.entity.Department108</department>
+            <department>ro.cs.om.entity.Department121</department>
+            <department>ro.cs.om.entity.Department110</department>
+            <department>ro.cs.om.entity.Department123</department>
+            <department>ro.cs.om.entity.Department116</department>
+            <department>ro.cs.om.entity.Department115</department>
+            <email>2@2.ro</email>
+            <fax>209824234</fax>
+            <name>SC CodeSphere S.R.L.</name>
+            <observation>sdfsdfsdfasdasd</observation>
+            <phone>29204923</phone>
+            <xmlID>35</xmlID>
+        </organisation>
+        <department>
+            <managerId>0</managerId>
+            <name>Resurse Umane</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department120</xmlID>
+        </department>
+        <department>
+            <manager>118</manager>
+            <managerId>0</managerId>
+            <name>Fake</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>121</person>
+            <person>127</person>
+            <person>113</person>
+            <person>118</person>
+            <person>128</person>
+            <person>129</person>
+            <person>130</person>
+            <person>126</person>
+            <status>2</status>
+            <xmlID>ro.cs.om.entity.Department109</xmlID>
+        </department>
+        <department>
+            <manager>127</manager>
+            <managerId>0</managerId>
+            <name>Dezvoltare Java</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department110</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>129</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department114</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Financiar</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>130</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department107</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Achizitii</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department122</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Dezvoltare Java pe solutii ECM</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department114</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>121</person>
+            <person>129</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department117</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Dezvoltare Microsoft</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department110</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department124</xmlID>
+        </department>
+        <department>
+            <manager>13</manager>
+            <managerId>0</managerId>
+            <name>Contabilitate</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department107</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>128</person>
+            <person>130</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department108</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>IT</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department121</xmlID>
+        </department>
+        <department>
+            <manager>13</manager>
+            <managerId>0</managerId>
+            <name>Dezvoltare</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>13</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department110</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Logistica</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department109</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department123</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Dezvoltare Java pe solutii IBM</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department114</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>121</person>
+            <person>113</person>
+            <person>129</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department116</xmlID>
+        </department>
+        <department>
+            <managerId>0</managerId>
+            <name>Dezvoltare Flex</name>
+            <organisation>35</organisation>
+            <organisationId>0</organisationId>
+            <parentDepartment>ro.cs.om.entity.Department110</parentDepartment>
+            <parentDepartmentId>0</parentDepartmentId>
+            <person>118</person>
+            <person>129</person>
+            <status>1</status>
+            <xmlID>ro.cs.om.entity.Department115</xmlID>
+        </department>
+        <person>
+            <address>Str. General Bertlo Nr. 2, Bl. 102, Ap. 16, Sector 2, Bucuresti</address>
+            <birthDate>0001-01-01T00:00:00+02:00</birthDate>
+            <day>1</day>
+            <department>ro.cs.om.entity.Department110</department>
+            <email>popescu.adrian@codesphere.ro</email>
+            <firstName>Popescu</firstName>
+            <lastName>Adrian</lastName>
+            <month>0</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>67</pictureId>
+            <sex>77</sex>
+            <username>user01</username>
+            <xmlID>13</xmlID>
+            <year>1</year>
+        </person>
+        <person>
+            <address>Str. 12 Ianuarie Nr. 2, Bl. 2B, Ap. 201, Sector 3, Bucuresti</address>
+            <birthDate>1975-01-01T00:00:00+02:00</birthDate>
+            <day>1</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department116</department>
+            <email>ion.agarbiceanu@codesphere.ro</email>
+            <firstName>Ion</firstName>
+            <lastName>Agarbiceanu</lastName>
+            <month>0</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>65</pictureId>
+            <sex>77</sex>
+            <username>user02</username>
+            <xmlID>113</xmlID>
+            <year>1975</year>
+        </person>
+        <person>
+            <address>Bd. Regina Elisabeta Nr. 3, Bl. 4A, Et. 4, Ap. 102, Sector 3, Bucuresti</address>
+            <birthDate>1987-12-31T00:00:00+02:00</birthDate>
+            <day>31</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department115</department>
+            <email>andrei.nicolae@yahoo.com</email>
+            <firstName>Andrei</firstName>
+            <lastName>Nicolae</lastName>
+            <month>11</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>62</pictureId>
+            <sex>77</sex>
+            <username>user03</username>
+            <xmlID>118</xmlID>
+            <year>1987</year>
+        </person>
+        <person>
+            <address>Str. Tineretului Nr. 5, Bl. E1, Ap. 15, Urziceni, 92350, Ialomita, Romania</address>
+            <birthDate>1988-01-01T00:00:00+02:00</birthDate>
+            <day>1</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department116</department>
+            <department>ro.cs.om.entity.Department117</department>
+            <email>bogdan.ungureanu@codesphere.ro</email>
+            <firstName>Bogdan</firstName>
+            <lastName>Ungureanu</lastName>
+            <month>0</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>61</pictureId>
+            <sex>77</sex>
+            <username>user04</username>
+            <xmlID>121</xmlID>
+            <year>1988</year>
+        </person>
+        <person>
+            <address>Str. Aurora Nr.3 Bl. 55 Ap. 7</address>
+            <birthDate>1998-01-01T00:00:00+02:00</birthDate>
+            <day>1</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <email>alexandru.ion@gmail.com</email>
+            <firstName>Alexandru</firstName>
+            <lastName>Ion</lastName>
+            <month>0</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>66</pictureId>
+            <sex>77</sex>
+            <username>user05</username>
+            <xmlID>126</xmlID>
+            <year>1998</year>
+        </person>
+        <person>
+            <address>-</address>
+            <birthDate>0002-12-31T00:00:00+02:00</birthDate>
+            <day>31</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <email>alexandru.ion@kiwi.com</email>
+            <firstName>Alexandru</firstName>
+            <lastName>Ion</lastName>
+            <month>11</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>0</pictureId>
+            <username>user06</username>
+            <xmlID>127</xmlID>
+            <year>2</year>
+        </person>
+        <person>
+            <address>Str. Libertatii Nr. 8, Bl. 2A, Bacau, Jud. Bacau</address>
+            <birthDate>0002-12-31T00:00:00+02:00</birthDate>
+            <day>31</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department108</department>
+            <email>razvan.popescu@codesphere.ro</email>
+            <firstName>Razvan</firstName>
+            <lastName>Popescu</lastName>
+            <month>11</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>0</pictureId>
+            <username>user07</username>
+            <xmlID>128</xmlID>
+            <year>2</year>
+        </person>
+        <person>
+            <address>-</address>
+            <birthDate>1983-12-31T00:00:00+02:00</birthDate>
+            <day>31</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department114</department>
+            <department>ro.cs.om.entity.Department116</department>
+            <department>ro.cs.om.entity.Department117</department>
+            <department>ro.cs.om.entity.Department115</department>
+            <email>daniel.alexandrescu@kiwi.com</email>
+            <firstName>Daniel</firstName>
+            <lastName> Alexandrescu</lastName>
+            <month>11</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>0</pictureId>
+            <sex>77</sex>
+            <username>user08</username>
+            <xmlID>129</xmlID>
+            <year>1983</year>
+        </person>
+        <person>
+            <address>Str. Zambilelor Nr.2, Bl. 3, Ap. 17, Tecuci, Jud. Tecuci</address>
+            <birthDate>1980-12-31T00:00:00+02:00</birthDate>
+            <day>31</day>
+            <department>ro.cs.om.entity.Department109</department>
+            <department>ro.cs.om.entity.Department107</department>
+            <department>ro.cs.om.entity.Department108</department>
+            <email>ionut.ciocirlan@emag.ro</email>
+            <firstName>Ionut</firstName>
+            <lastName>Ciocirlan</lastName>
+            <month>11</month>
+            <observation></observation>
+            <password>7c4a8d09ca3762af61e59520943dc26494f8941b</password>
+            <phone></phone>
+            <pictureId>0</pictureId>
+            <sex>77</sex>
+            <username>user09</username>
+            <xmlID>130</xmlID>
+            <year>1980</year>
+        </person>
+    </organisationContainer>
+</organisationContainers>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is part of Termitaria, a project management tool Copyright 
+	(C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro Termitaria is free software; 
+	you can redistribute it and/or modify it under the terms of the GNU Affero 
+	General Public License as published by the Free Software Foundation; either 
+	version 3 of the License, or (at your option) any later version. This program 
+	is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+	without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+	PURPOSE. See the GNU Affero General Public License for more details. You 
+	should have received a copy of the GNU Affero General Public License along 
+	with Termitaria. If not, see <http://www.gnu.org/licenses/> . -->
+<!-- =========================================================================== 
+	====================== ORGANISATION MANAGEMENT ============================ 
+	=========================================================================== 
+	======================= Root Spring Application Context =================== -->
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- ========================= APPLICATION CONTEXT PROVIDER ===================== -->
+	<bean id="applicationContextProvider" class="ro.cs.om.context.ApplicationContextProvider" />
+
+	<context:component-scan base-package="ro.cs.om.web.controller"
+		use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+	</context:component-scan>
+
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+		<constructor-arg>
+			<util:list>
+				<security:filter-chain pattern="/SignOn.htm*"
+					filters="none" />
+
+				<security:filter-chain pattern="/*.css"
+					filters="none" />
+				<security:filter-chain pattern="/*.js"
+					filters="none" />
+				<security:filter-chain pattern="/*.jpg"
+					filters="none" />
+				<security:filter-chain pattern="/reportservlet*"
+					filters="none" />
+				<security:filter-chain pattern="/SignupWizard.htm*"
+					filters="none" />
+				<security:filter-chain pattern="/OrganisationVerifyNameUniqueness.htm*"
+					filters="none" />
+				<security:filter-chain pattern="/PersonVerifyUsernameUniqueness.htm*"
+					filters="none" />
+				<security:filter-chain pattern="/**" filters="generalFilter" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="generalFilter" class="ro.cs.om.web.filter.GeneralFilter" />
+
+	<!-- ========================= MESSAGE SOURCE DEFINITION ======================== -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="config.messages_en" />
+	</bean>
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties 
+		file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition 
+		below) -->
+	<context:property-placeholder location="classpath:config/jdbc.properties" />
+
+	<!-- Uses Apache Commons DBCP for connection pooling. See Commons DBCP documentation 
+		for the required JAR files. A standalone connection pool such as Commons 
+		DBCP is a good choice for use outside an application server environment, 
+		including web applications running in a web container without JTA, or integration 
+		testing using the org.springframework.test package. -->
+	<bean id="OMdataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="${om.jdbc.driverClassName}"
+		p:url="${om.jdbc.url}" p:username="${om.jdbc.username}" p:password="${om.jdbc.password}" />
+
+	<!-- Hibernate SessionFactory for Organisation Management -->
+	<bean id="OMSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+		p:dataSource-ref="OMdataSource">
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${om.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${om.hibernate.show_sql}</prop>
+				<prop key="hibernate.generate_statistics">${om.hibernate.generate_statistics}</prop>
+				<prop key="hibernate.default_schema">${om.hibernate.schema}</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>orm/organisation.hbm.xml</value>
+				<value>orm/department.hbm.xml</value>
+				<value>orm/person.hbm.xml</value>
+				<value>orm/role.hbm.xml</value>
+				<value>orm/permission.hbm.xml</value>
+				<value>orm/outofoffice.hbm.xml</value>
+				<value>orm/calendar.hbm.xml</value>
+				<value>orm/freeday.hbm.xml</value>
+				<value>orm/job.hbm.xml</value>
+				<value>orm/setting.hbm.xml</value>
+				<value>orm/module.hbm.xml</value>
+				<value>orm/theme.hbm.xml</value>
+				<value>orm/picture.hbm.xml</value>
+				<value>orm/logo.hbm.xml</value>
+				<value>orm/localization.hbm.xml</value>
+				<value>orm/usergroup.hbm.xml</value>
+			</list>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="OMSessionFactory" />
+		</property>
+	</bean>
+
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative 
+		to JTA) -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="OMSessionFactory">
+	</bean>
+
+	<bean id="matchAllInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+		</property>
+	</bean>
+
+	<!-- ================================= DAO OBJECTS =========================================== -->
+
+	<bean id="authorizationDao" class="ro.cs.om.model.dao.impl.DaoAuthorizationImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="personDao" class="ro.cs.om.model.dao.impl.DaoPersonImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="organisationDao" class="ro.cs.om.model.dao.impl.DaoOrganisationImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="calendarDao" class="ro.cs.om.model.dao.impl.DaoCalendarImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="freeDayDao" class="ro.cs.om.model.dao.impl.DaoFreeDayImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="departmentDao" class="ro.cs.om.model.dao.impl.DaoDepartmentImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="moduleDao" class="ro.cs.om.model.dao.impl.DaoModuleImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="permissionDao" class="ro.cs.om.model.dao.impl.DaoPermissionImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="roleDao" class="ro.cs.om.model.dao.impl.DaoRoleImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="settingDao" class="ro.cs.om.model.dao.impl.DaoSettingImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="jobDao" class="ro.cs.om.model.dao.impl.DaoJobImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="pictureDao" class="ro.cs.om.model.dao.impl.DaoPictureImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="themeDao" class="ro.cs.om.model.dao.impl.DaoThemeImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="logoDao" class="ro.cs.om.model.dao.impl.DaoLogoImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="oooDao" class="ro.cs.om.model.dao.impl.DaoOOOImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="localizationDao" class="ro.cs.om.model.dao.impl.DaoLocalizationImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+	<bean id="userGroupDao" class="ro.cs.om.model.dao.impl.DaoUserGroupImpl">
+		<property name="sessionFactory" ref="OMSessionFactory" />
+	</bean>
+
+
+	<!-- ================================= END DAO OBJECTS ======================================= -->
+
+	<!-- ================================== TRANSACTION MAPPING ================================== -->
+
+	<bean id="autoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref local="matchAllInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref local="personDao" />
+				<idref local="organisationDao" />
+				<idref local="calendarDao" />
+				<idref local="freeDayDao" />
+				<idref local="departmentDao" />
+				<idref local="permissionDao" />
+				<idref local="roleDao" />
+				<idref local="settingDao" />
+				<idref local="jobDao" />
+				<idref local="pictureDao" />
+				<idref local="logoDao" />
+				<idref local="oooDao" />
+				<idref local="localizationDao" />
+				<idref local="userGroupDao" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- ========================= THEME SOURCE DEFINITION ======================================= -->
+	<bean id="themeSource" class="ro.cs.om.web.theme.CustomThemeSource">
+		<property name="basenamePrefix" value="config.theme." />
+	</bean>
+
+
+	<bean id="hibernateStats" class="org.hibernate.jmx.StatisticsService">
+		<property name="sessionFactory">
+			<ref bean="OMSessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=hibernateStatsMBean">
+					<ref bean="hibernateStats"></ref>
+				</entry>
+			</map>
+		</property>
+		<property name="assembler">
+			<bean
+				class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">
+				<property name="methodMappings">
+					<props>
+						<prop key="bean:name=hibernateStatsMBean">
+						</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+		<!-- only in 1.2.6 <property name="registrationBehavior"><value>2</value></property> -->
+	</bean>
+
+	<!-- ========================= AUDIT WEB SERVICE CLIENT CONFIGURATION ============== -->
+
+	<bean id="auditWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="ro.cs.om.ws.client.audit.entity" />
+		<property name="mtomEnabled" value="true" />
+		<property name="marshallerProperties">
+			<map>
+				<entry>
+					<key>
+						<value>com.sun.xml.bind.namespacePrefixMapper</value>
+					</key>
+					<bean class="ro.cs.om.ws.client.audit.NamespacePrefixMapperImpl" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="auditWebServiceClient" class="ro.cs.om.ws.client.audit.AuditWebServiceClient">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri"
+			value="http://localhost:8084/Termitaria/Audit/services" />
+		<property name="marshaller" ref="auditWsClientMarshaller" />
+		<property name="unmarshaller" ref="auditWsClientMarshaller" />
+		<property name="interceptors">
+			<list>
+				<ref bean="clientWsSecurityInterceptor" />
+				<ref bean="soapEnvelopeLoggingInterceptor" />
+			</list>
+		</property>
+		<property name="objectFactory" ref="auditWsClientObjectFactory" />
+	</bean>
+
+	<bean id="auditWsClientObjectFactory" class="ro.cs.om.ws.client.audit.entity.ObjectFactory" />
+	<bean id="soapEnvelopeLoggingInterceptor" class="ro.cs.om.ws.client.audit.SoapEnvelopeLoggingInterceptor" />
+
+	<!-- ========================= DME WEB SERVICE CLIENT CONFIGURATION ============== -->
+
+	<bean id="dmeWsClientMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="ro.cs.om.ws.client.dme.entity" />
+		<property name="marshallerProperties">
+			<map>
+				<entry>
+					<key>
+						<value>com.sun.xml.bind.namespacePrefixMapper</value>
+					</key>
+					<bean class="ro.cs.om.ws.client.dme.NamespacePrefixMapperImpl" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="dmeWebServiceClient" class="ro.cs.om.ws.client.dme.DMEWebServiceClient">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri"
+			value="http://localhost:8081/Termitaria/DMEngine/services" />
+		<property name="marshaller" ref="dmeWsClientMarshaller" />
+		<property name="unmarshaller" ref="dmeWsClientMarshaller" />
+		<property name="interceptors">
+			<list>
+				<ref bean="clientWsSecurityInterceptor" />
+				<ref bean="soapEnvelopeLoggingInterceptor" />
+			</list>
+		</property>
+		<property name="objectFactory" ref="dmeWsClientObjectFactory" />
+	</bean>
+
+	<bean id="dmeWsClientObjectFactory" class="ro.cs.om.ws.client.dme.entity.ObjectFactory" />
+	<!-- ========================= END DME WEB SERVICE CLIENT CONFIGURATION 
+		============== -->
+
+	<!-- ============================== MESSAGE FACTORY USED BY OM WS SERVER 
+		AND AUDIT WS CLIENT ================================================ -->
+
+	<bean id="messageFactory"
+		class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory">
+		<property name="payloadCaching" value="true" />
+		<property name="attachmentCaching" value="true" />
+		<property name="attachmentCacheThreshold" value="1024" />
+	</bean>
+
+	<!-- ============================= MESSAGE FACTORY USED BY OM WS SERVER 
+		AND AUDIT WS CLIENT ======================================================== -->
+</beans>

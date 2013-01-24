@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--   
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+-->
+<beans>
+
+	<!-- ========================= VIEW DEFINITIONS ========================= -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver" >
+		<property name="basename" value="config.views"/>
+	</bean>
+	<!-- ========================= DEFINITIONS OF PUBLIC CONTROLLERS ========================= -->
+
+	<!-- Common Injections Abstract Controller - CIA Controller -->
+	<bean id="CIAController" abstract="true">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- =======================================CONTROLERS========================================= -->
+	
+	<!-- first 3 Controllers to manage first entrance of one user -->
+	
+	<!-- 1 authentication page -->
+	<bean id="OMSignOnController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="SignOn"/>
+	</bean>
+	<!-- 2 choose a module to which it has access to  -->
+	<bean id="ModulesController" class="ro.cs.om.web.controller.general.ModulesController"/>
+
+	<!-- 3 main OM page -->
+	<bean id="MainController" parent="CIAController" class="ro.cs.om.web.controller.general.MainController"/>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- ORGANISATION -->
+
+	<bean id="UserAndOrganizationSpecInfoController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="UserAndOrganizationSpecInfo"/>
+	</bean>
+	
+	<bean id="VLDOrganisation" class="ro.cs.om.web.validator.VLDOrganisation"/>
+	<bean id="OrganisationFormController" parent="CIAController" class="ro.cs.om.web.controller.form.OrganisationFormController">
+		<property name="validator" ref="VLDOrganisation" />
+	</bean>
+	
+	<bean id="OrganisationSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.OrganisationSearchController"/>
+	
+	<bean id="OrganisationOverviewController" class="ro.cs.om.web.controller.general.OrganisationOverviewController"/>
+			
+	<bean id="OrganisationGetSubDepartmentsController" class="ro.cs.om.web.controller.general.OrganisationGetSubDepartmentsController"/>
+	
+	<bean id="OrganisationTreeGetNodeController" class="ro.cs.om.web.controller.general.OrganisationTreeGetNodeController"/>
+	
+	<bean id="OrganisationOrganigramController" class="ro.cs.om.web.controller.general.OrganisationOrganigramController"/>
+	
+	<bean id="OrganisationOrganigramToPdfController" class="ro.cs.om.web.controller.general.OrganisationOrganigramToPdfController"/>
+	
+	<bean id="OrganigramGetDepartmentsPersonsController" parent="CIAController" class="ro.cs.om.web.controller.general.OrganigramGetDepartmentsPersonsController"/>
+	
+	<bean id="OrganisationCeoController" parent="CIAController" class="ro.cs.om.web.controller.form.OrganisationCeoController"/>
+	
+	<bean id="OrganisationVerifyNameUniquenessController" class="ro.cs.om.web.controller.general.OrganisationVerifyNameUniquenessController"/>
+
+	<bean id="OrganisationBranchController" parent="CIAController" class="ro.cs.om.web.controller.general.OrganisationBranchController"/>
+	
+	<bean id="OrganisationGeneralInfoController" parent="CIAController" class="ro.cs.om.web.controller.general.OrganisationGeneralInfoController"/>
+	
+	<bean id="OrganisationTreeStructureController" parent="CIAController" class="ro.cs.om.web.controller.general.OrganisationTreeStructureController"/>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- DEPARTMENT -->
+	
+	<bean id="VLDDepartment" class="ro.cs.om.web.validator.VLDDepartment"/>
+	<bean id="DepartmentFormController" parent="CIAController" class="ro.cs.om.web.controller.form.DepartmentFormController">
+		<property name="validator" ref="VLDDepartment" />
+	</bean>
+	
+	<bean id="DepartmentViewController" parent="CIAController" class="ro.cs.om.web.controller.general.DepartmentViewController"/>
+	
+	<bean id="DepartmentSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.DepartmentSearchController"/>	
+	
+	<bean id="ChangeDepartmentPropertiesController" parent="CIAController" class="ro.cs.om.web.controller.general.ChangeDepartmentPropertiesController"/>
+	
+	<bean id="DepartmentGetParentDepartmentsController" parent="CIAController" class="ro.cs.om.web.controller.general.DepartmentGetParentDepartmentsController"/>
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- PERSON -->
+
+	<bean id="VLDPerson" class="ro.cs.om.web.validator.VLDPerson"/>
+	<bean id="PersonFormController" parent="CIAController" class="ro.cs.om.web.controller.form.PersonFormController">
+		<property name="validator" ref="VLDPerson" />
+	</bean>
+	
+	<bean id="PersonViewController" parent="CIAController" class="ro.cs.om.web.controller.general.PersonViewController"/>
+	
+	<bean id="PersonSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.PersonSearchController"/>
+	
+	<bean id="PersonVerifyUsernameUniquenessController" class="ro.cs.om.web.controller.general.PersonVerifyUsernameUniquenessController"/>
+	
+	<bean id="PersonUploadPictureController" parent="CIAController" class="ro.cs.om.web.controller.form.PersonUploadPictureController"/>
+	
+	<bean id="PersonRenderPictureController" parent="CIAController" class="ro.cs.om.web.controller.general.PersonRenderPictureController"/>
+	
+	<bean id="PersonGetDepartmentsSelectController" parent="CIAController" class="ro.cs.om.web.controller.general.PersonGetDepartmentsSelectController"/>
+	
+	<bean id="PersonGetNumberOfDaysController" parent="CIAController" class="ro.cs.om.web.controller.general.PersonGetNumberOfDaysController"/>
+			
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- ROLE -->
+	
+	<bean id="RoleController" parent="CIAController" class="ro.cs.om.web.controller.form.RoleController" />
+	
+	<bean id="RoleGetModulesController" parent="CIAController" class="ro.cs.om.web.controller.general.RoleGetModulesController" />
+	
+	<bean id="RoleSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.RoleSearchController" />
+	
+	<bean id="RoleChangePermissionsController_OLD" parent="CIAController" class="ro.cs.om.web.controller.general.RoleChangePermissionsController_OLD"/>
+	
+	<bean id="RolePermissionsForModuleController" parent="CIAController" class="ro.cs.om.web.controller.general.RolePermissionsForModuleController" />
+	
+	<bean id="RoleVerifyNameUniquenessController" class="ro.cs.om.web.controller.general.RoleVerifyNameUniquenessController"/>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- USERGROUP -->
+	
+	<bean id="UserGroupSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.UserGroupSearchController"/>
+	
+	<bean id="UserGroupController" parent="CIAController" class="ro.cs.om.web.controller.form.UserGroupController"/>
+	
+	<bean id="UserGroupViewController" parent="CIAController" class="ro.cs.om.web.controller.general.UserGroupViewController"/>
+	
+	<bean id="UserGroupVerifyNameUniquenessController" class="ro.cs.om.web.controller.general.UserGroupVerifyNameUniquenessController"/>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- PERMISSION -->
+	
+	<bean id="PermissionController" parent="CIAController" class="ro.cs.om.web.controller.form.PermissionController" />
+	
+	<bean id="PermissionSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.PermissionSearchController" />
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- OUT OF OFFICE -->
+	
+	<bean id="OOOListForPersonController" parent="CIAController" class="ro.cs.om.web.controller.general.OOOListForPersonController"/>
+	
+	<bean id="OOOController" parent="CIAController" class="ro.cs.om.web.controller.form.OOOController"/>
+	
+	<bean id="OOOSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.OOOSearchController"/>
+	
+	<bean id="OOOShowTimeController" parent="CIAController" class="ro.cs.om.web.controller.general.OOOShowTimeController"/>
+			
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CALENDAR -->
+	
+	<bean id="CalendarController" parent="CIAController" class="ro.cs.om.web.controller.form.CalendarController"/>
+	<bean id="CalendarViewController" parent="CIAController" class="ro.cs.om.web.controller.general.CalendarViewController"/>
+	<bean id="CalendarShowTimeController" parent="CIAController" class="ro.cs.om.web.controller.general.CalendarShowTimeController"/>
+	
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- FREEDAY -->	
+	
+	<bean id="FreeDayController" parent="CIAController" class="ro.cs.om.web.controller.form.FreeDayController"/>
+	
+	<bean id="FreeDayListingController" parent="CIAController" class="ro.cs.om.web.controller.general.FreeDayListingController"/>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- JOBS -->
+	
+	<bean id="JobSearchController" parent="CIAController" class="ro.cs.om.web.controller.form.JobSearchController" />	
+	
+	<bean id="JobController" parent="CIAController" class="ro.cs.om.web.controller.form.JobController" />
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- SETTINGS -->
+	
+	<bean id="SettingListController" parent="CIAController" class="ro.cs.om.web.controller.general.SettingListController" />
+	
+	<bean id="SettingController" parent="CIAController" class="ro.cs.om.web.controller.form.SettingController"/>
+	
+	<bean id="ClientLogoChangeController" parent="CIAController" class="ro.cs.om.web.controller.form.ClientLogoChangeController"/>
+	
+	<bean id="ClientLogoApplyController" class="ro.cs.om.web.controller.general.GeneralController">
+		<property name="view" value="ClientLogoApply"/>
+	</bean>
+
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- LOCALE -->
+	
+	<!-- bean id="ChangeLocaleController" parent="CIAController" class="ro.cs.om.web.controller.general.GeneralController"/ -->
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- =====================================END CONTROLERS====================================== -->
+	
+	
+	
+	
+	<bean id="simpleUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="httpInterceptor" />
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				
+				<!-- ORGANISATION MANAGEMENT MAIN ENTRY POINT -->
+				<prop key="/SignOn.htm">OMSignOnController</prop>
+				<prop key="/Modules.htm">ModulesController</prop>
+				<prop key="/Main.htm">MainController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- ORGANISATION -->
+				<prop key="/OrganisationSearch.htm">OrganisationSearchController</prop>
+				<prop key="/OrganisationForm.htm">OrganisationFormController</prop>
+				<prop key="/OrganisationOrganigram.htm">OrganisationOrganigramController</prop>
+				<prop key="/OrganisationOverview.htm">OrganisationOverviewController</prop>
+				<prop key="/OrganisationGetSubDepartments.htm">OrganisationGetSubDepartmentsController</prop>
+				<prop key="/OrganisationTreeGetNode.htm">OrganisationTreeGetNodeController</prop>
+				<prop key="/OrganisationOrganigramToPdf.htm">OrganisationOrganigramToPdfController</prop>
+				<prop key="/OrganisationCeo.htm">OrganisationCeoController</prop>
+				<prop key="/OrganisationVerifyNameUniqueness.htm">OrganisationVerifyNameUniquenessController</prop>		
+				<prop key="/OrganisationBranch.htm">OrganisationBranchController</prop>
+				<prop key="/OrganisationGeneralInfo.htm">OrganisationGeneralInfoController</prop>
+				<prop key="/OrganisationTreeStructure.htm">OrganisationTreeStructureController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- DEPARTMENT -->
+				<prop key="/DepartmentView.htm">DepartmentViewController</prop>				
+				<prop key="/DepartmentForm.htm">DepartmentFormController</prop>
+				<prop key="/DepartmentSearch.htm">DepartmentSearchController</prop>
+				<prop key="/OrganigramGetDepartmentsPersons.htm">OrganigramGetDepartmentsPersonsController</prop>
+				<prop key="/ChangeDepartment.htm">ChangeDepartmentPropertiesController</prop>
+				<prop key="/DepartmentGetParentDepartments.htm">DepartmentGetParentDepartmentsController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- PERSON -->
+				<prop key="/PersonForm.htm">PersonFormController</prop>
+				<prop key="/CreateAdmin.htm">PersonFormController</prop>
+				<prop key="/PersonMyProfile.htm">PersonFormController</prop>
+				<prop key="/PersonView.htm">PersonViewController</prop>
+				<prop key="/PersonSearch.htm">PersonSearchController</prop>
+				<prop key="/PersonVerifyUsernameUniqueness.htm">PersonVerifyUsernameUniquenessController</prop>
+				<prop key="/PersonUploadPicture.htm">PersonUploadPictureController</prop>
+				<prop key="/PersonRenderPicture.htm">PersonRenderPictureController</prop>
+				<prop key="/PersonSearchGetDepartmentsSelect.htm">PersonGetDepartmentsSelectController</prop>
+				<prop key="/PersonGetNumberOfDays.htm">PersonGetNumberOfDaysController</prop>
+								
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- ROLE -->
+				<prop key="/Role.htm">RoleController</prop>
+				<prop key="/SearchRole.htm">RoleSearchController</prop>
+				<prop key="/RoleGetModulesForOrganisation.htm">RoleGetModulesController</prop>
+				<prop key="/ChangeRolesPermissions.htm">RoleChangePermissionsController_OLD</prop>
+				<prop key="/RolePermissionsForModule.htm">RolePermissionsForModuleController</prop>
+				<prop key="/RoleVerifyNameUniqueness.htm">RoleVerifyNameUniquenessController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- USERGROUP -->
+				<prop key="/SearchUserGroup.htm">UserGroupSearchController</prop>
+				<prop key="/UserGroup.htm">UserGroupController</prop>
+				<prop key="/UserGroupView.htm">UserGroupViewController</prop>
+				<prop key="/UserGroupVerifyNameUniqueness.htm">UserGroupVerifyNameUniquenessController</prop>		
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- PERMISSION -->
+				<prop key="/Permission.htm">PermissionController</prop>
+				<prop key="/SearchPermission.htm">PermissionSearchController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- JOB -->
+				<prop key="/Job.htm">JobController</prop>
+				<prop key="/SearchJob.htm">JobSearchController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- OOO -->
+				<prop key="/OutOfOfficeListForPerson.htm">OOOListForPersonController</prop>
+				<prop key="/OutOfOffice.htm">OOOController</prop>
+				<prop key="/SearchOutOfOffice.htm">OOOSearchController</prop>			
+				<prop key="/OOOShowTimeController.htm">OOOShowTimeController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- CALENDAR -->
+				<prop key="/Calendar.htm">CalendarController</prop>
+				<prop key="/CalendarView.htm">CalendarViewController</prop>
+				<prop key="/CalendarShowTimeController.htm">CalendarShowTimeController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!--  FREEDAYS -->
+				<prop key="/FreeDay.htm">FreeDayController</prop>
+				<prop key="/FreeDayListing.htm">FreeDayListingController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- SETTINGS -->
+				<prop key="/SettingList.htm">SettingListController</prop>
+				<prop key="/ClientLogoChange.htm">ClientLogoChangeController</prop>
+				<prop key="/ClientLogoApply.htm">ClientLogoApplyController</prop>
+				<prop key="/Setting.htm">SettingController</prop>
+				
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<!-- OTHER -->
+				<prop key="/UserAndOrganizationSpecInfo.htm">UserAndOrganizationSpecInfoController</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<!-- ==========================================RESOLVERS========================================= -->
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+		
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="209715200" />
+		<!-- ADICA 200MB -->
+	</bean>
+	
+	<bean id="exceptionResolver" class="ro.cs.om.web.common.ExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">Exception</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="themeResolver" class="ro.cs.om.web.theme.CustomThemeResolver"/>
+	<!-- =======================================END===RESOLVERS========================================= -->
+
+
+	<!-- =======================================OTHER===INTERCEPTORS==================================== -->
+	<bean id="httpInterceptor" class="ro.cs.om.web.interceptor.HttpInterceptor" />
+
+	<!-- =======================================OTHER===INTERCEPTORS==================================== -->
+
+
+	<!-- ====================================== JOB-URI ================================================ -->
+	<bean name="CleanOMContext" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="ro.cs.om.job.CleanOMContext"/>
+	</bean>
+	
+	<bean id="simpleTriggerCleanOMContext" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="CleanOMContext"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="1800000"/><!-- in milisecunde: 30min -->
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+			 	<ref bean="simpleTriggerCleanOMContext"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ====================================== JOB-URI ================================================ -->
+
+</beans>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--    This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+    -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://localhost:8080/OM/services/schemas/messages" 
+		xmlns:tns="http://localhost:8080/OM/services/schemas/messages" 
+		elementFormDefault="qualified">
+
+	<!-- ====================================== SCHEMA ELEMENTS =============================================================== -->
+	
+	<element name="GetOrganisationSimpleResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="unbounded" name="organisation" type="tns:organisationSimple" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetOrganisationSimpleRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="organisationId" type="int"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetLogoResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="logo" type="tns:WSLogo" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetLogoRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="organisationId" type="int"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	
+	<element name="GetUsersSimpleResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="unbounded" name="users" type="tns:userSimple" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUsersSimpleRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="unbounded" name="userIds" type="string"/>
+				<element minOccurs="1" maxOccurs="unbounded" name="organizationId" type="int"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUserAuthBySecurityTokenResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="userAuth" type="tns:WSUserAuth" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUserAuthBySecurityTokenRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="securityToken" type="string"/>
+				<element minOccurs="1" maxOccurs="1" name="module" type="int"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUsersAndGroupsByOrganizationResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="unbounded" name="usersAndGroups" type="tns:WSUserOrGroup" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUsersAndGroupsByOrganizationRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="organizationId" type="int"/>
+				<element minOccurs="1" maxOccurs="1" name="withUsers" type="boolean"/>
+				<element minOccurs="1" maxOccurs="1" name="withGroups" type="boolean"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetDeletedUsersAndGroupsByOrganizationRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="organizationId" type="int"/>
+				<element minOccurs="1" maxOccurs="1" name="withUsers" type="boolean"/>
+				<element minOccurs="1" maxOccurs="1" name="withGroups" type="boolean"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUserGroupByIdResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="userGroup" type="tns:WSUserOrGroup"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetUserGroupByIdResquest">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="userGroupId" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetPersonFromSearchRequest">
+		<complexType>
+			<sequence>
+				<element minOccurs="0" maxOccurs="1" name="organizationId" type="int"/>
+				<element minOccurs="0" maxOccurs="1" name="firstName" type="string"/>
+				<element minOccurs="0" maxOccurs="1" name="lastName" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="GetPersonFromSearchResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="persons" type="tns:userSimple"/>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- ======================================  END SCHEMA ELEMENTS ========================================================== -->
+	
+	
+	<!-- ======================================  SCHEMA TYPES ================================================================= -->
+	<complexType name="organisationSimple">
+		<all>
+			<element name="organisationId" type="int"/>
+			<element name="name" type="string" /> 
+		</all>
+	</complexType>
+
+	<complexType name="document">
+		<all>
+			<element name="documentId" type="int"/>
+			<element name="name" type="string" /> 
+		</all>
+	</complexType>
+	
+	<complexType name="userSimple">
+		<all>
+			<element name="userId" type="int"/>
+			<element name="username" type="string"/>
+			<element name="firstName" type="string" />
+			<element name="lastName" type="string" />
+			<element name="email" type="string" /> 
+		</all>
+	</complexType>
+	
+	<complexType name="WSUserAuth">
+		<all>
+			<element name="personId" type="int"/>
+			<element name="username" type="string"/>
+			<element name="accountNonExpired" type="boolean"/>
+			<element name="accountNonLocked" type="boolean"/>
+			<element name="credentialsNonExpired" type="boolean"/>
+			<element name="enabled" type="boolean"/>
+			<element name="adminIT" type="boolean"/>
+			<element name="authoritiesArray"  type="tns:WSGrantedAuthorityImplArray"/>
+			<element name="firstName" type="string"/>
+			<element name="lastName" type="string"/>
+			<element name="sex" type="string"/>
+			<element name="birthDate" type="dateTime"/>
+			<element name="address" type="string"/>
+			<element name="phone" type="string"/>
+			<element name="email" type="string"/>
+			<element name="observation" type="string"/>
+			<element name="themeCode" type="string"/>
+			<element name="organisationId" type="int"/>
+			<element name="organisationName" type="string"/>
+			<element name="organisationAddress" type="string"/>
+			<element name="jobDepartmentPairs" type="string"/>
+			<element name="userGroups" type="string"/>
+		</all>
+		
+	</complexType>
+
+	<complexType name="WSGrantedAuthorityImpl">
+			<all>
+				<element name="authority" type="string"/>
+			</all>
+	</complexType>
+	
+	<complexType name="WSGrantedAuthorityImplArray">
+		<sequence>
+			<element minOccurs="1" maxOccurs="unbounded" name="authorities" type="tns:WSGrantedAuthorityImpl"/>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="OMEndpointExceptionBean">
+		<all>
+			<element name="code" type="string"/>
+			<element name="message" type="string"/>
+		</all>
+	</complexType>
+	
+	<complexType name="WSUserOrGroup">
+		<all>
+			<element name="id" type="int"/>
+			<element name="name" type="string"/>
+			<element name="firstName" type="string" />
+			<element name="lastName" type="string" />
+			<element name="email" type="string" />
+			<element name="group" type="boolean" />
+			<element name="enabled" type="boolean" />
+		</all>
+	</complexType>
+	
+	<complexType name="WSLogo">
+		<all>
+			<element name="logoId" type="int"/>
+			<element name="picture" type="base64Binary" />
+			<element name="dateCreated" type="date"/>
+			<element name="dateModified" type="date" />
+			<element name="organisationId" type="int" />
+			<element name="extension" type="string" />
+		</all>
+	</complexType>
+	
+	<!--  =====================================  END SCHEMA TYPES ======================================================== -->
+</schema>

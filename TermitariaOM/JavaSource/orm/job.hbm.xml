@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  ============================= JOB =========================================
+ -->
+ 
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+    <class name="ro.cs.om.entity.Job" entity-name="Job" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="description" column="DESCRIPTION" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="status" column="STATUS" />
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" />
+    </class>
+    <class name="ro.cs.om.web.entity.JobWeb" entity-name="JobWeb" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="status" column="STATUS" />
+        <property name="description" column="DESCRIPTION" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="organisationId" column="ORGANISATIONID" />
+       </class>
+    <class name="ro.cs.om.entity.Job" entity-name="JobForListing" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="status" column="STATUS" />
+        <property name="description" column="DESCRIPTION" />
+        <property name="observation" column="OBSERVATION" />
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+       </class>
+       
+    <class name="ro.cs.om.entity.Job" entity-name="JobForDelete" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="status" column="STATUS" />
+        <property name="description" column="DESCRIPTION" />
+        <property name="observation" column="OBSERVATION" />
+     </class>
+     
+     <class name="ro.cs.om.entity.Job" entity-name="JobAll" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="status" column="STATUS" />
+        <property name="description" column="DESCRIPTION" />
+        <property name="observation" column="OBSERVATION" />
+        
+        <set name="deptWithPerson" table="personxdepartment">
+			<key column="JOBID"/>
+			<many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />					
+		</set>
+		
+     </class>
+     
+      <class name="ro.cs.om.entity.Job" entity-name="JobWithPersons" table="job">
+        <id name="jobId" column="JOBID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="jobLevel" column="JOBLEVEL" />
+        <property name="status" column="STATUS" />
+        <property name="description" column="DESCRIPTION" />
+        <property name="observation" column="OBSERVATION" />
+        
+        <set name="persons" table="personxdepartment">
+			<key column="JOBID"/>
+			<many-to-many column="PERSONID" entity-name="PersonSimple" />					
+		</set>
+		
+     </class>
+     
+</hibernate-mapping>

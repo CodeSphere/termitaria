@@ -1,0 +1,11 @@
+= HOW TO INSTALL TERMITARIA =
+
+1. Run the Termitaria.sql script. This will create your databases: om, cm, ts and audit.
+2. Configure for each module the jdbc parameters
+	In JavaSource/config/jdbc.properties, you will have to specify the:
+		<module>.jdbc.url=jdbc\:mysql\://localhost\:3306/<module>
+		<module>.jdbc.username=root
+		<module>.jdbc.password=password
+3. Add all your projects to Tomcat Server: TermitariaOM, TermitariaCM, TermitariaTS and TermitariaAudit.   
+
+

@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  ======================== PERMISSION =======================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+    <class name="ro.cs.om.entity.Permission" entity-name="Permission" table="permission">
+        <id name="permissionId" column="PERMISSIONID">
+            <generator class="native" />
+        </id>
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="name" column="NAME" />
+        <property name="moduleId" column="MODULEID" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Permission" entity-name="PermissionAll" table="permission">
+       <id name="permissionId" column="PERMISSIONID">
+           <generator class="native" />
+       </id>
+       <!-- Models a one-to-one relation with a Localization -->
+       <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+       <property name="name" column="NAME" />
+       <property name="moduleId" column="MODULEID" />
+       <!-- Many to many mapping Roles x Permisions -->
+       <set name="roles" table="rolexpermission" sort="unsorted">
+         <key column="PERMISSIONID" />
+         <many-to-many column="ROLEID" entity-name="Role" />
+       </set> 
+   </class>
+    
+    <class name="ro.cs.om.entity.Permission" entity-name="PermissionWithRoles" table="permission">
+       <id name="permissionId" column="PERMISSIONID">
+           <generator class="native" />
+       </id>
+       <!-- Models a one-to-one relation with a Localization -->
+       <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all"  />
+       <property name="name" column="NAME" />
+       <property name="moduleId" column="MODULEID" />
+       <!-- Many to many mapping Roles x Permisions -->
+        <set name="roles" table="rolexpermission" sort="unsorted">
+          <key column="PERMISSIONID" />
+          <many-to-many column="ROLEID" entity-name="Role" />
+     	</set>       
+   </class>  
+        
+    <class name="ro.cs.om.web.entity.PermissionWeb" entity-name="PermissionForListing" table="permission">
+        <id name="permissionId" column="PERMISSIONID">
+            <generator class="native" />
+        </id>
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all"  />
+        <property name="name" column="NAME" />
+        <many-to-one name="module" entity-name="Module" column="MODULEID" unique="true" not-found="ignore"/>
+    </class>
+
+ </hibernate-mapping>

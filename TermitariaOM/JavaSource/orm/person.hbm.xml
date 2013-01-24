@@ -1,0 +1,475 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  ======================== PERSON ===========================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+    
+    <class name="ro.cs.om.entity.Person" entity-name="Person" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="password" column="PASSWORD" />
+        <property name="username" column="USERNAME" />
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />   
+        <property name="status" column="STATUS" />                    
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonWithPicture" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>       
+        <property name="username" column="USERNAME" />
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <one-to-one name="picture" class="Picture"  property-ref="personId" cascade="delete" />         
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonSimple" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+
+    </class>
+    
+    <class name="ro.cs.om.web.security.UserAuth" entity-name="PersonUserDetails" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="password" column="PASSWORD" />
+        <property name="username" column="USERNAME" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="accountNonExpired" column="ACCOUNT_NON_EXPIRED" />
+        <property name="accountNonLocked" column="ACCOUNT_NON_LOCKED" />
+        <property name="credentialsNonExpired" column="CREDENTIALS_NON_EXPIRED" />
+        <property name="enabled" column="ENABLED" />
+        <property name="status" column="STATUS" /> 
+        
+        <!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+        
+        <set name="depts" table="personxdepartment" sort="unsorted">
+            <key column="PERSONID" />
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />
+        </set>
+        
+    </class>
+    <class name="ro.cs.om.entity.Person" entity-name="PersonWithCredentials" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="password" column="PASSWORD" />
+        <property name="username" column="USERNAME" />
+        
+    </class>
+    <class name="ro.cs.om.entity.Person" entity-name="PersonAll" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="password" column="PASSWORD" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+        <property name="status" column="STATUS" />     
+         
+        <one-to-one name="picture" class="Picture"  property-ref="personId" cascade="delete" /> 
+		
+		<!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+		
+		<!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithModule" not-found="ignore"/>
+        </set>
+		
+		<!-- Models a one-to-one relation with OOO -->
+        <set name="outOfOffice" cascade="all" inverse="true" >
+            <key column="PERSONID" />
+            <one-to-many entity-name="OutOfOfficeAll"/>
+        </set>     
+           	
+		<!-- Many to many mapping Person x Department -->
+		<set name="depts" table="personxdepartment" sort="unsorted">
+            <key column="PERSONID" />
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />
+        </set>
+        
+        <!-- Many to many mapping Person x User Group -->
+        <set name="userGroups" table="personxusergroup">
+        	<key column="PERSONID"/>
+        	<many-to-many column="USERGROUPID" entity-name="UserGroupSimple"/>
+        </set>
+        
+    </class>
+        
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForAdd" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="password" column="PASSWORD" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+		<!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+       <!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithModule" />
+        </set> 
+        <set name="userGroups" table="personxusergroup">
+        	<key column="PERSONID"/>
+        	<many-to-many column="USERGROUPID" entity-name="UserGroupSimple"/>
+        </set>
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForUpdate" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+        <property name="status" column="status" />
+		<!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+		<!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithModule" not-found="ignore"/>
+        </set> 
+        
+        <set name="userGroups" table="personxusergroup">
+        	<key column="PERSONID"/>
+        	<many-to-many column="USERGROUPID" entity-name="UserGroupSimple"/>
+        </set>
+     
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonWithRoles" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+		<!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole" cascade="delete">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithModule" />
+        </set>
+
+    </class>
+   
+    <!-- ~~~~~~~~~~~~~~~~ 4 ADMIN IT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <class name="ro.cs.om.entity.Person" entity-name="PersonAdmintITWithRoles" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+		<!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole" cascade="delete">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithPermissions" />
+        </set>
+   
+    </class>
+    
+    
+    <!-- ~~~~~~~~~~~~~~~~ 4 ADMIN IT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonWithDepartments" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+		<!-- This entity it's used on the Add new person case, and password is not null,
+                        so, it's mandatory a new person to have a password -->
+        <property name="password" column="PASSWORD" />
+        <property name="username" column="USERNAME" />
+        <property name="status" column="STATUS" />
+		<!-- Many to many mapping Person x Department -->
+        <set name="depts" table="personxdepartment" sort="unsorted">
+            <key column="PERSONID" />
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />
+        </set>
+		<!-- One to many mapping Person <- Out Of Office -->
+        <set name="outOfOffice" cascade="all" inverse="true" sort="unsorted">
+            <key column="PERSONID" />
+            <one-to-many class="OutOfOffice" />
+        </set>
+        
+        <!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+ 
+    </class>
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForAuthorization" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="password" column="PASSWORD" />
+        <property name="username" column="USERNAME" />
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+		<!-- Many to many mapping Person x Department -->
+        <set name="depts" table="personxdepartment" sort="unsorted">
+            <key column="PERSONID" />
+            <many-to-many column="DEPARTMENTID" entity-name="Department" />
+        </set>
+		<!-- One to many mapping Person <- Out Of Office -->
+        <set name="outOfOffice" cascade="all" inverse="true" sort="unsorted">
+            <key column="PERSONID" />
+            <one-to-many class="OutOfOffice" />
+        </set>
+        <set name="userGroups" table="personxusergroup">
+        	<key column="PERSONID"/>
+        	<many-to-many column="USERGROUPID" entity-name="UserGroupSimple"/>
+        </set>
+    </class>
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForListing" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="username" column="USERNAME" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="status" column="STATUS" />     
+		<!-- Many to many mapping Person x Department -->
+        <set name="depts" table="personxdepartment">
+            <key column="PERSONID"/>
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />
+        </set>
+        <!-- Many to many mapping Person x Role -->
+        <set name="roles" table="personxrole" cascade="delete">
+            <key column="PERSONID" />
+            <many-to-many column="ROLEID" entity-name="RoleWithPermissions" />
+        </set>
+        <property name="enabled" column="ENABLED" />
+         <!-- Many to many mapping Person x Department -->
+        <map name="deptWithJob" table="personxdepartment">
+            <key column="PERSONID" />
+            <map-key-many-to-many column="DEPARTMENTID" entity-name="Department" />
+            <many-to-many column="JOBID" entity-name="Job" not-found="ignore"/>
+        </map>
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonFromOrganisation" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="username" column="USERNAME" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="enabled" column="ENABLED" />
+        <property name="status" column="STATUS" /> 
+		<!-- Many to many mapping Person x Department -->
+        <set name="depts" table="personxdepartment">
+            <key column="PERSONID"/>
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentSimple" />
+        </set>       
+    </class>
+        
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForExpImp" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="password" column="PASSWORD" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+		<!-- Many to many mapping Person x Department -->
+        <set name="depts" table="personxdepartment">
+            <key column="PERSONID" />
+            <many-to-many column="DEPARTMENTID" entity-name="DepartmentForExpImp" />
+        </set>  
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonForExpImp1" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="password" column="PASSWORD" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+
+    </class>
+	<class name="ro.cs.om.entity.Person" entity-name="PersonForDelete" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="address" column="ADDRESS" />
+        <property name="birthDate" column="BIRTHDATE" />
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="password" column="PASSWORD" />
+        <property name="phone" column="PHONE" />
+        <property name="sex" column="SEX" />
+        <property name="username" column="USERNAME" />
+        
+		<!-- Models a one-to-one relation with OOO -->
+        <set name="outOfOffice" inverse="true" cascade="delete">
+            <key column="PERSONID" />
+            <one-to-many entity-name="OutOfOfficeForDelete"/>
+        </set>
+        
+       	<!-- Models a one-to-one relation with Picture -->
+		<one-to-one name="picture" class="Picture"  property-ref="personId" cascade="delete"/> 
+        
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonWithUserGroups" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>
+        <property name="email" column="EMAIL" />
+        <property name="firstName" column="FIRSTNAME" />
+        <property name="lastName" column="LASTNAME" />
+        <property name="status" column="STATUS" />
+        <set name="userGroups" table="personxusergroup">
+        	<key column="PERSONID"/>
+        	<many-to-many column="USERGROUPID" entity-name="UserGroupSimple"/>
+        </set>
+    </class>
+    
+    <class name="ro.cs.om.entity.Person" entity-name="PersonChangeStatus" table="person">
+        <id name="personId" column="PERSONID">
+            <generator class="native" />
+        </id>       
+        <property name="status" column="STATUS" />       
+    </class>
+      
+</hibernate-mapping>

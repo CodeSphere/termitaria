@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+	<!--
+		===========================================================================
+		====================== ORGANISATION MANAGEMENT
+		============================
+		===========================================================================
+		======================== ORGANISATION
+		=====================================
+	-->
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="Organisation"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="address" column="ADDRESS" />
+		<property name="email" column="EMAIL" />
+		<property name="fax" column="FAX" />
+		<property name="name" column="NAME" />
+		<property name="observation" column="OBSERVATION" />
+		<property name="phone" column="PHONE" />
+		<property name="status" column="STATUS" />
+		<property name="j" column="J" />
+		<property name="cui" column="CUI" />
+		<property name="iban" column="IBAN" />
+		<property name="capital" column="CAPITAL" />
+		<property name="location" column="LOCATION" />
+		<property name="type" column="TYPE" />
+		<property name="parentId" column="PARENTID" />
+		
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationForNom"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />
+		<set name="modules" table="orgxmodule">
+			<key column="ORGANISATIONID" />
+			<many-to-many column="MODULEID" entity-name="ModuleWithRoles" />
+		</set>
+	</class>
+	
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithModulesForNom"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NAME" />
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationAll"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="address" column="ADDRESS" />
+		<property name="email" column="EMAIL" />
+		<property name="fax" column="FAX" />
+		<property name="name" column="NAME" />
+		<property name="observation" column="OBSERVATION" />
+		<property name="phone" column="PHONE" />
+		<property name="j" column="J" />
+		<property name="cui" column="CUI" />
+		<property name="iban" column="IBAN" />
+		<property name="capital" column="CAPITAL" />
+		<property name="location" column="LOCATION" />
+		<property name="type" column="TYPE" />
+		<!-- Models a one-to-one relation with Calendar -->
+		<one-to-one name="calendar" class="Calendar" property-ref="organisationId" />
+		<set name="modules" table="orgxmodule">
+			<key column="ORGANISATIONID" />
+			<many-to-many column="MODULEID" entity-name="ModuleWithRoles" />
+		</set>
+		<set name="departments" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="DepartmentWithPersons" />
+		</set>
+		<set name="settings" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="SettingAll" />
+		</set>
+		<property name="parentId" column="PARENTID" />
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithCalendar"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<!-- Models a one-to-one relation with Calendar -->
+		<many-to-one name="calendar" entity-name="Calendar"
+			column="CALENDARID" unique="true" />
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithRoles"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<set name="roles" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="RoleForOrganisation" />
+		</set>
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithSettings"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<set name="settings" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="SettingAll" />
+		</set>
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithDepartments"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<set name="departments" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="Department" />
+		</set>
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithPersons"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<set name="departments" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="DepartmentWithPersons" />
+		</set>
+	</class>
+
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationWithModules"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="address" column="ADDRESS" />
+		<property name="email" column="EMAIL" />
+		<property name="fax" column="FAX" />
+		<property name="name" column="NAME" />
+		<property name="observation" column="OBSERVATION" />
+		<property name="phone" column="PHONE" />
+		<property name="j" column="J" />
+		<property name="cui" column="CUI" />
+		<property name="iban" column="IBAN" />
+		<property name="capital" column="CAPITAL" />
+		<property name="location" column="LOCATION" />
+		<property name="type" column="TYPE" />
+		<set name="modules" table="orgxmodule">
+			<key column="ORGANISATIONID" />
+			<many-to-many column="MODULEID" entity-name="Module" />
+		</set>
+		<property name="parentId" column="PARENTID" />
+	</class>
+	
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationForExpImp"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="address" column="ADDRESS" />
+		<property name="email" column="EMAIL" />
+		<property name="fax" column="FAX" />
+		<property name="name" column="NAME" />
+		<property name="observation" column="OBSERVATION" />
+		<property name="phone" column="PHONE" />
+		<!-- Models a many-to-many relation with Module -->
+		<set name="modules" table="orgxmodule">
+			<key column="ORGANISATIONID" />
+			<many-to-many column="MODULEID" entity-name="Module" />
+		</set>
+		<set name="departments" inverse="true" cascade="save-update">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="DepartmentForExpImp" />
+		</set>
+		<set name="settings" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="SettingAll" />
+		</set>
+	</class>
+	
+	<class name="ro.cs.om.entity.Organisation" entity-name="OrganisationForDelete"
+		table="organisation">
+		<id name="organisationId" column="ORGANISATIONID">
+			<generator class="native" />
+		</id>
+		<property name="address" column="ADDRESS" />
+		<property name="email" column="EMAIL" />
+		<property name="fax" column="FAX" />
+		<property name="name" column="NAME" />
+		<property name="observation" column="OBSERVATION" />
+		<property name="phone" column="PHONE" />
+		<property name="j" column="J" />
+		<property name="cui" column="CUI" />
+		<property name="iban" column="IBAN" />
+		<property name="capital" column="CAPITAL" />
+		<property name="location" column="LOCATION" />
+		<property name="type" column="TYPE" />
+		<property name="parentId" column="PARENTID" />
+		
+		<!-- Models a one-to-one relation with Calendar -->
+		<one-to-one name="calendar" class="Calendar" property-ref="organisationId" cascade="delete"/>
+		
+		<set name="settings" inverse="true" cascade="delete">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="SettingForDelete" />
+		</set>
+		
+		<set name="roles" inverse="true" cascade="delete">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="RoleForDelete" />
+		</set>
+		
+		<set name="usergroups" inverse="true" cascade="delete">
+            <key column="ORGANISATIONID" />
+            <one-to-many entity-name="UserGroupSimple" />
+        </set>
+        
+		<!-- Models a one-to-one relation with Logo -->
+		<one-to-one name="logo" class="Logo" property-ref="organisationId" cascade="delete"/>
+		
+		<set name="jobs" inverse="true" cascade="delete">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="JobForDelete" />
+		</set>
+		
+		<set name="modules" table="orgxmodule">
+			<key column="ORGANISATIONID"/>
+			<many-to-many column="MODULEID" entity-name="ModuleWithRoles" />
+		</set>
+		
+		<set name="organisations" inverse="true" cascade="delete">
+            <key column="PARENTID" />
+            <one-to-many entity-name="OrganisationForDelete" />
+        </set>
+        
+        <set name="departments" inverse="true" cascade="all">
+			<key column="ORGANISATIONID" />
+			<one-to-many entity-name="DepartmentWithPersonsForDelete" />
+		</set>
+        
+	</class>
+
+</hibernate-mapping>

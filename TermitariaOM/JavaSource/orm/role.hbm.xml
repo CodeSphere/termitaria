@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ===========================================================================
+  ====================== ORGANISATION MANAGEMENT ============================
+  ===========================================================================
+  =========================== ROLE ==========================================
+ -->
+<hibernate-mapping auto-import="true" default-lazy="false">
+
+	<class name="ro.cs.om.entity.Role" entity-name="RoleSimple" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+    </class>
+	
+    <class name="ro.cs.om.entity.Role" entity-name="Role" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleForOrganisation" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+        <many-to-one name="organisation" entity-name="OrganisationWithRoles" column="ORGANISATIONID" not-null="true" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleForModule" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+        <many-to-one name="module" entity-name="ModuleWithRoles" column="MODULEID" not-found="ignore" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleForListing" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="status" column="STATUS" />
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+        <many-to-one name="module" entity-name="Module" column="MODULEID" not-found="ignore" />
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-found="ignore" />
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleAll" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+        <many-to-one name="module" entity-name="Module" column="MODULEID" unique="true" not-found="ignore"/>
+        <set name="permissions" table="rolexpermission" sort="unsorted">
+            <key column="ROLEID" />
+            <many-to-many column="PERMISSIONID" entity-name="Permission" />
+        </set>
+            <set name="persons" table="personxrole" sort="unsorted">
+            <key column="ROLEID" />
+            <many-to-many column="PERSONID" entity-name="Person" />
+        </set>
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+    </class>
+    
+    <class name="ro.cs.om.web.entity.RoleWeb" entity-name="RoleWeb" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />       
+       	<!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="observation" column="OBSERVATION" />
+        <property name="status" column="STATUS"/>
+        <property name="moduleId" column="MODULEID" />
+        <property name="organisationId" column="ORGANISATIONID" />
+        <set name="permissions" table="rolexpermission" sort="unsorted">
+            <key column="ROLEID" />
+            <element type="integer" column="PERMISSIONID" />
+        </set>
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleWithPermissions" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+         <property name="moduleId" column="MODULEID" />
+		<!-- Many to many mapping Roles x Permisions -->
+        <set name="permissions" table="rolexpermission" sort="unsorted">
+            <key column="ROLEID" />
+            <many-to-many column="PERMISSIONID" entity-name="Permission" />
+        </set>
+    </class>   
+     
+    <class name="ro.cs.om.entity.Role" entity-name="RoleWithModule" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" unique="true" not-found="ignore" cascade="all" />
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        
+		<!-- Models a one-to-one relation with a Module -->
+        <many-to-one name="module" entity-name="Module" column="MODULEID" unique="true" not-found="ignore"/>
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleForDelete" table="role">
+        <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />
+        <property name="observation" column="OBSERVATION" />
+        
+        <set name="persons" table="personxrole">
+            <key column="ROLEID" />
+            <many-to-many column="PERSONID" entity-name="Person" not-found="ignore"/>
+        </set> 
+        
+        <set name="permissions" table="rolexpermission" sort="unsorted">
+            <key column="ROLEID" />
+            <many-to-many column="PERMISSIONID" entity-name="Permission" not-found="ignore"/>
+        </set>
+        
+        <!-- Models a one-to-one relation with a Localization -->
+        <many-to-one name="description" entity-name="Localization" column="DESCRIPTION" not-found="ignore" unique="true" cascade="all"/>
+        
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+         
+    </class>
+    
+    <class name="ro.cs.om.entity.Role" entity-name="RoleForAdmin" table="role">
+         <id name="roleId" column="ROLEID">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NAME" />       
+        <set name="persons" table="personxrole" sort="unsorted">
+            <key column="ROLEID" />
+            <many-to-many column="PERSONID" entity-name="Person" />
+        </set>
+        <many-to-one name="organisation" entity-name="Organisation" column="ORGANISATIONID" not-null="true" />
+    </class>
+        
+</hibernate-mapping>

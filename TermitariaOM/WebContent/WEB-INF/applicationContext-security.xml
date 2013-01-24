@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of Termitaria, a project management tool 
+   Copyright (C) 2008-2013 CodeSphere S.R.L., www.codesphere.ro
+    
+   Termitaria is free software; you can redistribute it and/or 
+   modify it under the terms of the GNU Affero General Public License 
+   as published by the Free Software Foundation; either version 3 of 
+   the License, or (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU Affero General Public License for more details.
+   
+   You should have received a copy of the GNU Affero General Public License 
+   along with Termitaria. If not, see  <http://www.gnu.org/licenses/> .
+-->
+
+<!-- =========================================================================== 
+	====================== ORGANIZATION MANAGEMENT ============================ 
+	=========================================================================== 
+	======================= Spring Security Context =========================== -->
+
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<http access-denied-page="/accessDenied.jsp"
+		access-decision-manager-ref="domainAccessDecisionManager">
+
+	<!-- WE ALLOW ONLY ONE SESSION PER USER -->
+		<session-management>
+			<concurrency-control max-sessions="1" expired-url="/" />
+		</session-management>
+
+		<!-- ORGANISATION MANAGEMENT MAIN ENTRY POINT -->
+		<intercept-url pattern="/SignOn.htm*" access="ROLE_ANONYMOUS" />
+		<intercept-url pattern="/SignupWizard.htm*" access="ROLE_ANONYMOUS" />
+		<intercept-url pattern="/OrganisationVerifyNameUniqueness.htm*" access="ROLE_ANONYMOUS,IS_AUTHENTICATED_ANONYMOUSLY, OM_Basic" />
+		<intercept-url pattern="/PersonVerifyUsernameUniqueness.htm*" access="ROLE_ANONYMOUS, IS_AUTHENTICATED_ANONYMOUSLY, OM_Basic" />
+		<intercept-url pattern="/Modules.htm*"
+			access="IS_AUTHENTICATED_ANONYMOUSLY, OM_Basic" />
+		<intercept-url pattern="/Main.htm*"
+			access="IS_AUTHENTICATED_ANONYMOUSLY, OM_Basic" />
+		<intercept-url pattern="/getSecurityToken.htm*"
+			access="IS_AUTHENTICATED_ANONYMOUSLY, OM_Basic" />
+
+		<!-- ORGANISATION -->
+		<intercept-url pattern="/OrganisationOverview.htm*"
+			access="OM_Basic, OM_ViewTreeComplete" />
+		<intercept-url pattern="/OrganisationForm.htm*"
+			access="Super, OM_OrgUpdate, OM_OrgAddChild" />
+		<intercept-url pattern="/OrganisationCeo.htm*" access="OM_OrgAddCeo" />
+		<intercept-url pattern="/OrganisationBranch.htm*"
+			access="OM_ShowBranchSelect " />
+		<intercept-url pattern="/OrganisationSearch.htm*"
+			access="Super" />
+
+		<!-- DEPARTMENT -->
+		<intercept-url pattern="/DepartmentForm.htm*" access="OM_DeptAdd,  OM_DeptUpdate" />
+		<intercept-url pattern="/DepartmentSearch.htm*"
+			access="OM_Basic, OM_DeptDelete, OM_ShowBranchSelect" />
+		<intercept-url pattern="/ChangeDepartment.htm*" access="OM_ChangePersons" />
+
+		<!-- PERSON -->
+		<intercept-url pattern="/PersonForm.htm*"
+			access="OM_ResetPassword, OM_PersonAdd, OM_PersonUpdate, OM_EditUsername, OM_ViewPersonRoleDepartmentDetails, OM_PersonDelete" />
+		<intercept-url pattern="/PersonSearch.htm*"
+			access="OM_Basic, OM_ShowBranchSelect, OM_PersonDelete, OM_PersonChangeStatus" />
+		<intercept-url pattern="/CreateAdmin.htm*"
+			access="OM_PersonUpdate, OM_PersonAdd, OM_OrgCreateAdmin" />
+		<intercept-url pattern="/PersonMyProfile.htm*" access="OM_Basic, OM_ResetPassword" />
+
+		<!-- ROLE -->
+		<intercept-url pattern="/Role.htm*" access="OM_RoleAdd, OM_RoleUpdate" />
+		<intercept-url pattern="/SearchRole.htm*"
+			access="OM_RoleSearch, OM_RoleDelete, OM_ShowBranchSelect" />
+
+		<!-- USERGROUP -->
+		<intercept-url pattern="/UserGroup.htm*"
+			access="OM_UpdateUserGroup, OM_AddUserGroup" />
+
+		<!-- PERMISSION -->
+		<intercept-url pattern="/Permission.htm*" access="Super" />
+		<intercept-url pattern="/SearchPermission.htm*" access="OM_PermissionView" />
+
+		<!-- JOB -->
+		<intercept-url pattern="/SearchJob.htm*"
+			access="OM_JobDelete, OM_JobChangeStatus, OM_JobSearch" />
+		<intercept-url pattern="/Job.htm*" access="OM_JobAdd, OM_JobUpdate" />
+
+		<!-- OOO -->
+		<intercept-url pattern="/SearchOutOfOffice.htm*" access="OM_OutOfOfficeSearch" />
+
+		<!-- SETTINGS -->
+		<intercept-url pattern="/ClientLogoChange.htm*" access="OM_ChangeLogo" />
+		<intercept-url pattern="/ClientLogoApply.htm*" access="OM_ChangeLogo" />
+		<intercept-url pattern="/Setting.htm*" access="OM_ChangeSettings" />
+		<intercept-url pattern="/SettingList.htm*" access="OM_ChangeSettings" />
+
+		<!-- CALENDAR -->
+		<intercept-url pattern="/Calendar.htm*" access="OM_CalendarUpdate" />
+
+		<!-- FREEDAYS -->
+		<intercept-url pattern="/FreeDay.htm*" access="OM_FreedayAdd, OM_Freeday" />
+		<intercept-url pattern="/FreeDayListing.htm.*" access="OM_FreedayDelete" />
+
+		<!-- Security for the rest of links -->
+		<intercept-url pattern="/*.htm" access="OM_Basic" />
+		<intercept-url pattern="/servlet/**" access="OM_Basic" />
+
+		<remember-me key="OMKey" />
+
+		<form-login login-page="/SignOn.htm" default-target-url="/Modules.htm"
+			always-use-default-target="true" authentication-failure-url="/SignOn.htm?login_error=1" />
+		<logout invalidate-session="true" />
+
+	</http>
+
+
+
+	<b:bean id="userDetailsService" class="ro.cs.om.web.security.OMUserDetailsService" />
+
+	<authentication-manager>
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder hash="sha">
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+
+	<!-- An access decision voter that reads permission configuration settings -->
+	<b:bean id="roleVoter" class="ro.cs.om.web.security.OMRoleVoter">
+		<b:property name="rolePrefix" value="" />
+	</b:bean>
+
+	<!-- An access decision voter that reads IS_* configuration settings -->
+	<b:bean id="isAuthenticatedAnonimouslyVoter" class="ro.cs.om.web.security.OMRoleVoter">
+		<b:property name="rolePrefix" value="IS_" />
+	</b:bean>
+
+	<!-- An access decision manager used by the business objects -->
+	<b:bean id="domainAccessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<b:property name="allowIfAllAbstainDecisions" value="true" />
+		<b:property name="decisionVoters">
+			<b:list>
+				<b:ref local="roleVoter" />
+				<!-- <b:ref local="isAuthenticatedAnonimouslyVoter"/> -->
+			</b:list>
+		</b:property>
+	</b:bean>
+
+
+	<!-- =========================== SOAP MESSAGE CERTIFICATE VALIDATION AND 
+		AUTHENTICATION ==================================== -->
+
+	<!-- Security interceptor used to validate and authenticate the certificates 
+		attached to the Web Service requests -->
+	<b:bean id="wsSecurityInterceptor"
+		class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+		<b:property name="validationActions" value="Signature" />
+		<b:property name="securementUsername" value="trustedCA" />
+		<b:property name="securementPassword" value="password" />
+		<b:property name="validationSignatureCrypto">
+			<b:bean
+				class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+				<b:property name="keyStorePassword" value="password" />
+				<b:property name="keyStoreLocation" value="/WEB-INF/truststore.jks" />
+				<b:property name="keyStoreType" value="jks" />
+				<b:property name="defaultX509Alias" value="trustedCA" />
+			</b:bean>
+		</b:property>
+		<b:property name="timestampStrict" value="true" />
+		<b:property name="timeToLive" value="10" />
+	</b:bean>
+
+	<!-- ==================== SPRING WS SECURITY CERTIFICATE MESSAGE SIGNING 
+		FOR AUDIT WS CLIENT ============ -->
+
+	<b:bean id="clientWsSecurityInterceptor"
+		class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+		<b:property name="securementActions" value="Signature" />
+		<b:property name="securementSignatureKeyIdentifier" value="DirectReference" />
+		<b:property name="securementUsername" value="wsclient" />
+		<b:property name="securementPassword" value="password" />
+		<b:property name="securementSignatureCrypto">
+			<b:bean
+				class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+				<b:property name="keyStorePassword" value="password" />
+				<b:property name="keyStoreLocation" value="/WEB-INF/keystore.jks" />
+			</b:bean>
+		</b:property>
+	</b:bean>
+
+	<!-- ==================== END OF SPRING WS SECURITY CERTIFICATE MESSAGE 
+		SIGNING ============ -->
+</b:beans>

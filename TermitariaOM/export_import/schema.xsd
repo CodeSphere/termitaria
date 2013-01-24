@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="organisationContainer" type="organisationContainer"/>
+
+  <xs:element name="organisationContainers" type="organisationContainers"/>
+
+  <xs:complexType name="organisationContainers">
+    <xs:sequence>
+      <xs:element ref="organisationContainer" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="organisationContainer">
+    <xs:sequence>
+      <xs:element name="organisation" type="organisation" minOccurs="0"/>
+      <xs:element name="department" type="department" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="person" type="person" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="organisation">
+    <xs:sequence>
+      <xs:element name="address" type="xs:string" minOccurs="0"/>
+      <xs:element name="calendar" type="calendar" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="department" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="fax" type="xs:string" minOccurs="0"/>
+      <xs:element name="modules" type="module" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="roles" type="role" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="settings" type="setting" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="xmlID" type="xs:ID" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="calendar">
+    <xs:sequence>
+      <xs:element name="calendarId" type="xs:int"/>
+      <xs:element name="endWork" type="xs:string" minOccurs="0"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="organisation" type="organisation" minOccurs="0"/>
+      <xs:element name="startWork" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="department">
+    <xs:sequence>
+      <xs:element name="manager" type="xs:IDREF" minOccurs="0"/>
+      <xs:element name="managerId" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="organisation" type="xs:IDREF" minOccurs="0"/>
+      <xs:element name="organisationId" type="xs:int"/>
+      <xs:element name="parentDepartment" type="xs:IDREF" minOccurs="0"/>
+      <xs:element name="parentDepartmentId" type="xs:int"/>
+      <xs:element name="person" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="status" type="xs:byte"/>
+      <xs:element name="xmlID" type="xs:ID" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="person">
+    <xs:sequence>
+      <xs:element name="address" type="xs:string" minOccurs="0"/>
+      <xs:element name="birthDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="day" type="xs:int"/>
+      <xs:element name="department" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="firstName" type="xs:string" minOccurs="0"/>
+      <xs:element name="lastName" type="xs:string" minOccurs="0"/>
+      <xs:element name="month" type="xs:int"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="password" type="xs:string" minOccurs="0"/>
+      <xs:element name="passwordConfirm" type="xs:string" minOccurs="0"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="pictureId" type="xs:int"/>
+      <xs:element name="roles" type="role" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sex" type="xs:unsignedShort" minOccurs="0"/>
+      <xs:element name="username" type="xs:string" minOccurs="0"/>
+      <xs:element name="xmlID" type="xs:ID" minOccurs="0"/>
+      <xs:element name="year" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="role">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="module" type="module" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="organisation" type="organisation" minOccurs="0"/>
+      <xs:element name="permissions" type="permission" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="roleId" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="module">
+    <xs:sequence>
+      <xs:element name="alt" type="xs:string" minOccurs="0"/>
+      <xs:element name="moduleId" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="roles" type="role" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="url" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="permission">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="moduleId" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="permissionId" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="setting">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="organisation" type="organisation" minOccurs="0"/>
+      <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+      <xs:element name="settingId" type="xs:int"/>
+      <xs:element name="value" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
