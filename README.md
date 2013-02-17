@@ -7,7 +7,7 @@ HOW TO INSTALL TERMITARIA
 ===========================
 
 0. First of all you'll need to setup the software platform on which Termitaria will run, which is:
-  JDK 1.7
+  	JDK 1.7
 	Apache Tomcat 7.0 
 	MySQL Community Server 5.0
 
