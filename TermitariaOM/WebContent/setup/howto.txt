@@ -1,6 +1,6 @@
 = HOW TO INSTALL TERMITARIA =
 
-1. Run the Termitaria.sql script. This will create your databases: om, cm, ts and audit.
+1. Run the Termitaria.sql script. The script is located in TermitariaOM/WebContent/setup directory. This will create your databases: om, cm, ts and audit.
 2. Configure for each module the jdbc parameters
 	In JavaSource/config/jdbc.properties, you will have to specify the:
 		<module>.jdbc.url=jdbc\:mysql\://localhost\:3306/<module>
